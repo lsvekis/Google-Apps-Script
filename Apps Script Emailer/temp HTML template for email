@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <p style="font-family: fantasy;color:red;font-size:3em">Hi, <?= user.first ?></p>
+  <div>You have been approved</div>
+  <div> Congrats ....  <?= user.first ?>  <?= user.last ?></div>
+
+  </body>
+</html>
