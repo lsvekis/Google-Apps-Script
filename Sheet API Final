@@ -1,0 +1,115 @@
+const SHEETID = '1K4kLsAnxxwWoKoZObTrsNSbP0oqbF_-lAxfXKDspKkQ';
+const PAGE = 3;
+function catFinder(e){
+  if('cat' in e.parameters){
+    return e.parameters['cat'][0];
+  }
+  return null;
+}
+function pageFinder(e){
+  if('pg' in e.parameters){
+    let num = Number(e.parameters['pg'][0]);
+    if(num){return num; }
+    
+  }
+  return 1;
+}
+
+function doGet(e){
+  const ss = SpreadsheetApp.openById(SHEETID);
+  let cat = catFinder(e) ;
+  let pg = pageFinder(e) ;
+  //let cat = '';
+  //let pg = 2;
+  const sheet = ss.getSheetByName('jokes');
+  const rows = sheet.getDataRange().getValues();
+  const headings = rows[0].map(heading =>{
+    return heading.toString().toLowerCase();
+  })
+  const data = rows.slice(1);
+  let dataObj = makeObj(data,headings);
+  if(cat){
+    dataObj = dataObj.filter(item => item.category === cat);
+  }
+  const start = (pg * PAGE)-PAGE;
+  const myData = dataObj.splice(start,PAGE);
+  myData.forEach(item =>{
+  Logger.log(item);
+  })
+  Logger.log(myData);
+  const pagesTotal = Math.ceil(dataObj.length / PAGE);
+  //Logger.log(headings);
+  //Logger.log(data);
+  return outputContent(myData,pagesTotal,cat,pg);
+}
+
+function makeObj(data,headings){
+  const temp1 = data.map((arr)=>{
+    const obj = {};
+    headings.forEach((heading,index)=>{
+      obj[heading] = arr[index];
+    })
+    return obj;
+  })
+  return temp1;
+}
+
+function outputContent(data,pagesTotal,cat,pg){
+  const temp = JSON.stringify({
+    status : 'success',
+    data : data,
+    total : pagesTotal,
+    cats : getCats(),
+    cur: pg,
+    cat : cat
+  })
+  return ContentService.createTextOutput(temp).setMimeType(ContentService.MimeType.JSON);
+}
+
+
+function getCats(){
+    const ss = SpreadsheetApp.openById(SHEETID);
+    const sheet = ss.getSheetByName('category');
+    const rows = sheet.getDataRange().getValues();
+    const data = rows.slice(1);
+    const holder = [];
+    data.forEach((el)=>{
+      holder.push(el[0]);
+    })
+    return holder;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sheets API</title>
+</head>
+
+<body>
+    <div class="output"></div>
+    <script>
+        const url =
+            'https://script.google.com/macros/s/AKfycbze5Eub0EDrSpzLpJph5nbsmTn0L9SrPHLY6QlkeO4O9pEpOtJRPsp94Zf6djUNyX4-/exec';
+        const cat = 'Sports';
+        const page = 2;
+        const output = document.querySelector('.output');
+        const newURL = url + '?cat=' + cat + '&pg=' + page;
+        loadData();
+
+        console.log(newURL);
+
+        function loadData() {
+            fetch(newURL).then(rep => rep.json())
+                .then((data) => {
+                    console.log(data);
+                    data.data.forEach((el) => {
+                        console.log(el);
+                        output.innerHTML += `${el.id} ${el.content} ${el.response} <br>`;
+                    })
+                })
+        }
+    </script>
+</body>
+
+</html>
