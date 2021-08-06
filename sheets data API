@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sheets API</title>
+</head>
+<body>
+<div class="output"></div>
+<script>
+const url = 'https://script.google.com/macros/s/AKfycbxti7mFF1Arg5ZeBv21vK7z8bVhiBXzPRzGaNhepVN-3-qM5PqRytrN9ofS1anzO8S0/exec';
+const output = document.querySelector('.output');
+loadData();
+function loadData(){
+    fetch(url).then(rep => rep.json())
+    .then((data)=>{
+        console.log(data);
+        data.data.forEach((el)=>{
+            console.log(el);
+            output.innerHTML += `${el[0]} ${el[2]} ${el[3]} <br>`;
+        })
+    })
+}
+
+</script>
+</body>
+</html>
+
+
+const SHEETID = '1K4kLsAnxxwWoKoZObTrsNSbP0oqbF_-lAxfXKDspKkQ';
+
+function doGet(e){
+  const ss = SpreadsheetApp.openById(SHEETID);
+  const sheet = ss.getSheetByName('jokes');
+  const rows = sheet.getDataRange().getValues();
+  Logger.log(rows);
+  return outputContent(rows);
+}
+
+function outputContent(data){
+  const temp = JSON.stringify({
+    status : 'success',
+    data : data
+  })
+  return ContentService.createTextOutput(temp);
+}
