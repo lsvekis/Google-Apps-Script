@@ -1,0 +1,17 @@
+function myFunction() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('test');
+  const data = ss.getDataRange().getValues();
+  data.forEach((rowArr,rowIndex)=>{
+    rowArr.forEach((cell,colIndex)=>{
+    if(cell == '6'){
+     Logger.log(rowIndex);
+     const range = ss.getRange(rowIndex+1,colIndex+1);
+     range.setBackground('purple');
+     range.setFontColor('white');
+     range.setFontSize(19);
+      Logger.log(range.getValue());
+    }
+    })
+  })
+  //Logger.log(data);
+}
