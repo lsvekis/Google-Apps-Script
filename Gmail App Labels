@@ -1,0 +1,41 @@
+function applyLabel() {
+  const threads = GmailApp.getInboxThreads();
+  const myLabel = 'NEW Email Today';
+  const holder = [];
+  GmailApp.getUserLabels().forEach((labelName)=>{
+    holder.push(labelName.getName());
+  })
+  Logger.log(holder);
+  let tempLabel;
+  if(holder.includes(myLabel)){
+    tempLabel = GmailApp.getUserLabelByName(myLabel);
+  }else{
+    tempLabel = GmailApp.createLabel(myLabel);
+  }
+  Logger.log(tempLabel);
+  threads.forEach((message)=>{
+    //Logger.log(message);
+    const firstMes = message.getFirstMessageSubject();
+    if(firstMes.includes('new')){
+      message.addLabel(tempLabel);
+      message.moveToArchive();
+      message.markRead();
+    }
+  })
+}
+
+function checker(){
+  const tempMessage = GmailApp.getUserLabelByName('NEW Email Today');
+  const threads = tempMessage.getThreads();
+  threads.forEach((thread)=>{
+    thread.markUnread();
+    //thread.reply('Thank you!!!');
+    thread.removeLabel(tempMessage);
+    thread.moveToInbox();
+    Logger.log(thread.getMessageCount());
+    const messages = thread.getMessages();
+    messages.forEach((message)=>{
+      Logger.log(message.getSubject());
+    })
+  })
+}
