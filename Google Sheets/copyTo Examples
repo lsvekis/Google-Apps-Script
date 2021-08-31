@@ -1,0 +1,49 @@
+function formatOnlyCopy(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet1 = ss.getSheetByName('Sheet1').getDataRange();
+  const sheet5 = ss.getSheetByName('Sheet5').getDataRange();
+  sheet1.copyTo(sheet5,{formatOnly:true});
+}
+
+function contentOnlyCopy(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet1 = ss.getSheetByName('Sheet1').getDataRange();
+  const sheet4 = ss.getSheetByName('Sheet4').getDataRange();
+  sheet1.copyTo(sheet4,{contentsOnly:true});
+}
+
+function copytoSheet(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet1 = ss.getSheetByName('Sheet1').getDataRange();
+  const sheet2 = ss.getSheetByName('Sheet3').getDataRange();
+  sheet1.copyTo(sheet2);
+
+}
+
+function rows3Only(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sourceSheet = ss.getSheetByName('Sheet1');
+  const sourceRange = sourceSheet.getRange(1,1,3,4);
+  const desSheet = ss.insertSheet().setName('test 1000');
+  sourceRange.copyTo(desSheet.getDataRange());
+}
+
+function sheetSameSheet(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheets = ss.getSheets();
+  sheets.forEach((sheet)=>{
+    Logger.log(sheet.getName());
+  })
+  const sourceSheet = ss.getSheets()[0];
+  const rangeSource = sourceSheet.getRange("A:B");
+  const rangeDest = sourceSheet.getRange("D1");
+  rangeSource.copyTo(rangeDest);
+ // Logger.log(range);
+}
+
+function getDataMakeNewSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sourceSheet = ss.getSheetByName('Sheet1');
+  sourceSheet.copyTo(ss).setName('Test123').activate();
+  Logger.log(ss);
+}
