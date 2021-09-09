@@ -1,0 +1,31 @@
+function doGet(e) {
+  const html = HtmlService.createTemplateFromFile('index');
+  html.dataQ = {
+    arr : [1,2,3,4],
+    val : 5
+  }
+  const output = html.evaluate();
+  return output;
+}
+
+<script>
+  const dataV = <?!= JSON.stringify(dataQ) ?>;
+  console.log(dataV);
+  </script>
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body{
+        background-color:red;
+      }
+      </style>
+  </head>
+  <body>
+    <h1>Hello World V2</h1>
+    <script>
+      console.log('hello');
+      </script>
+  </body>
+</html>
