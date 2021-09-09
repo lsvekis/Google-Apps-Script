@@ -1,0 +1,68 @@
+function doGet(e) {
+  const html = HtmlService.createTemplateFromFile('index');
+  const output = html.evaluate();
+  return output;
+}
+
+function doUpload(obj){
+  const blob = Utilities.newBlob(Utilities.base64Decode(obj.data),obj.mimeType,obj.fileName);
+  const id = '1QNw4d-Rq7M0vdtmT7i8lr-ZDExWc8aZD';
+  const folder = DriveApp.getFolderById(id);
+  const file = folder.createFile(blob);
+  const fileURL = file.getUrl();
+  const response = {
+    'fileName' : obj.fileName,
+    'url' : fileURL,
+    'status' :true,
+    'data' : JSON.stringify(obj)
+  }
+  return response;
+}
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+<title>Uploader V2</title>
+  </head>
+  <body>
+    <h1>Upload your File to Drive</h1>
+    <input type="file" class="uploader">
+    <button class="btn">Upload</button>
+    <div class="output"></div>
+    <script>
+        const btn = document.querySelector('.btn');
+        const output = document.querySelector('.output');
+        const upFile = document.querySelector('.uploader');
+        btn.addEventListener('click',upLoadFile);
+        function upLoadFile(){
+            const upFiles = upFile.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e){
+                const vals = reader.result.split(',');
+                const obj = {
+                  fileName : upFiles.name,
+                  mimeType : upFiles.type,
+                  data : vals[1]
+                }
+                //console.log(obj);
+                google.script.run.withSuccessHandler(success).doUpload(obj);
+            }
+            if(upFiles){
+                reader.readAsDataURL(upFiles);
+            }
+            //console.log('ready');
+        }
+        function success(rep){
+          //console.log(rep);
+          const a = document.createElement('a');
+          const linkText = document.createTextNode(rep.fileName);
+          output.append(a);
+          a.append(linkText);
+          a.href = rep.url;
+          a.setAttribute('target','_blank');
+        }
+      </script>
+  </body>
+</html>
