@@ -1,0 +1,38 @@
+function onOpen(){
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('plus')
+    .addItem('remove dup rows','dupsRemover')
+    .addToUi();
+}
+
+
+function dupsRemover() {
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  const dataClean = [];
+  Logger.log(data);
+  data.forEach(row=>{
+    Logger.log(row);
+    let boo = false;
+    dataClean.forEach(rowClean=>{
+      if(rowClean.join() == row.join()){
+        boo = true;
+      }
+    })
+    if(!boo){
+      dataClean.push(row);
+    }
+  })
+  Logger.log(dataClean);
+  sheet.clearContents();
+  const range = sheet.getRange(1,1,dataClean.length,dataClean[0].length);
+  range.setValues(dataClean);
+}
+
+
+
+
+
+
+
+
