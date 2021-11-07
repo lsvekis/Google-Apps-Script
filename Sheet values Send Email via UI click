@@ -1,0 +1,18 @@
+function onOpen(){
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Functions')
+    .addItem('Email','senderEmail')
+    .addToUi();
+}
+
+function senderEmail(){
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const range = sheet.getActiveRange();
+  Logger.log(range.getRow());
+  const email = sheet.getRange(range.getRow(),2,1,1).getValue();
+  const user = sheet.getRange(range.getRow(),1,1,1).getValue();
+  Logger.log(email);
+  const message = 'Hello ' + user;
+  const subject = 'Sheet email tester';
+  MailApp.sendEmail(email,subject,message);
+}
