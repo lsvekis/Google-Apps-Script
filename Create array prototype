@@ -1,0 +1,23 @@
+function searcher() {
+    const searchString = 'test';
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const searchCol = 2;
+    //const data = sheet.getDataRange().getValues();
+    const range = sheet.getRange(2,searchCol,sheet.getLastRow());
+    const data = range.getValues();
+    Logger.log(data);
+    const result = data.finder(searchString);
+    Logger.log(result);
+}
+
+Array.prototype.finder = function(val){
+  if(val == "") return false;
+  const arr = [];
+  for(let i=0;i<this.length;i++){
+    if(this[i].toString().indexOf(val) > -1){
+      arr.push(i);
+    } 
+  }
+  return arr;
+}
+
