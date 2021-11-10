@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Code Example</title>
+  <style>
+    *{
+      box-sizing:border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="main">
+    <div class="output">
+      Hello World
+    </div>
+  </div>
+  <script src="app11.js"></script>
+</body>
+</html>
+
+const id = '14GOII3wSZGr3cnZ4Cu20LVQN9YflkR5EQQnNs0N6bjo';
+const base = 'https://docs.google.com/spreadsheets/d/';
+const query = 'SELECT *';
+const url = 'https://docs.google.com/spreadsheets/d/14GOII3wSZGr3cnZ4Cu20LVQN9YflkR5EQQnNs0N6bjo/gviz/tq?tqx=out:csv&sheet=Sheet%201&tq=SELECT%20*';
+const output = document.querySelector('.output');
+
+
+function getData(){
+    const tq = '/gviz/tq?tqx=out:json&tq=';
+    const endPoint = `${base}${id}${tq}`;
+    //console.log(endPoint);
+    fetch(endPoint).then(res=>res.text())
+    .then(data => {
+        //console.log(data);
+        let temp = data.replace('/*O_o*/','');
+        temp = temp.replace('google.visualization.Query.setResponse(','');
+        temp = temp.replace(');','');
+        //console.log(temp);
+        const jsonData = JSON.parse(temp);
+        outputData(jsonData.table);
+    })
+}
+
+getData();
+
+function outputData(data){
+    //console.log(data);
+    const arr = [];
+    const arr2 = [];
+    data.cols.forEach((col)=>{
+        //console.log(col.label);
+        if(col.label){
+            arr2.push(col.label);
+        }
+    })
+    arr.push(arr2);
+    data.rows.forEach(row=>{
+        //console.log(row.c);
+        const holder = [];
+/*         row.c.forEach(cell=>{
+            if(cell != null){
+                holder.push(cell.v);
+            }
+            //console.log(cell);
+        }) */
+        for(let x=0;x<arr2.length;x++){
+            //console.log(row.c[x]);
+            const val = (row.c[x] ==null) ? '' : row.c[x].v;
+            //console.log(val);
+            holder.push(val);
+        }
+        arr.push(holder);
+       
+    })
+    addtoPage(arr);
+    console.log(arr);
+}
+
+function addtoPage(data){
+    output.innerHTML = '';
+    data.forEach((vals,ind)=>{
+        const main = document.createElement('div');
+        if(vals[3] == true){
+            main.style.backgroundColor = 'green';
+        }else{
+            main.style.backgroundColor = 'red';  
+        }
+        if(ind==0){
+            main.style.backgroundColor = 'black';
+            main.style.fontSize = '1.2em';
+        }
+        main.style.color = 'white';
+        main.style.textAlign = 'center';
+        vals.forEach((val)=>{
+            const span = document.createElement('span');
+            let spacer = val == '' ? '-' : val;
+            span.textContent = spacer ;
+            span.style.border = '1px solid #ddd';
+            span.style.width = '25%';
+            span.style.display = 'inline-block';
+            
+            main.append(span);
+        })
+        output.append(main);
+    })
+}
+
+
