@@ -1,0 +1,43 @@
+function makePDF() {
+  const id = '*******';
+  const fid = '*******';
+  const blob = DriveApp.getFileById(id).getBlob();
+  const folder = DriveApp.getFolderById(fid);
+  //Logger.log(blob);
+  const file = folder.createFile(blob);
+  file.setName('LaurenceSvekis.pdf');
+  //const pdf = file.getAs('application/pdf');
+  //Logger.log(pdf);
+  const email = Session.getActiveUser().getEmail();
+  MailApp.sendEmail(email,'PDF maker','New File',{
+    attachments : [file.getAs(MimeType.PDF)],
+    name: 'My PDF'
+  })
+  file.setTrashed(true);
+}
+
+
+function slidesPdf(){
+  const id = '1*******_BxME';
+  const fid = '*******';
+  const file = DriveApp.getFileById(id);
+  const folder = DriveApp.getFolderById(fid);
+  const main = SlidesApp.openById(id);
+  const slides = main.getSlides();
+  let holder = SlidesApp.create('holder');
+  const holderID = holder.getId();
+  Logger.log(holderID);
+  const holderFile = DriveApp.getFileById(holderID);
+  Logger.log(holderFile);
+  Logger.log(slides);
+  slides.forEach((slide,index)=>{
+    holder.appendSlide(slide);
+    holder.getSlides()[0].remove();
+    holder.saveAndClose();
+    let page = index + 1;
+    folder.createFile(holderFile.getBlob()).setName('slide'+page+'.pdf');
+    holder = SlidesApp.openById(holderID);
+  })
+
+}
+
