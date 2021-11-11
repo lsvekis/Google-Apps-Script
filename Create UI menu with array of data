@@ -1,0 +1,19 @@
+function onOpen() {
+  const ss = SpreadsheetApp.getActive();
+  const menu = [
+    {name:'test 1', functionName : 'test1'},
+    {name:'test 2', functionName : 'test2'},
+    {name:'test 3', functionName : 'test3'}
+  ];
+  ss.addMenu('Extended',menu);
+}
+
+function test1(){
+  SpreadsheetApp.getActive().toast('test1');
+}
+function test2(){
+  SpreadsheetApp.getActive().toast('test2');
+}
+function test3(){
+  SpreadsheetApp.getActive().toast('test3');
+}
