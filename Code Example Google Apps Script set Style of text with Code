@@ -1,0 +1,22 @@
+const hText = {};
+hText[DocumentApp.Attribute.BACKGROUND_COLOR] = '#000000';
+hText[DocumentApp.Attribute.BORDER_COLOR] = '#ffffff';
+hText[DocumentApp.Attribute.HORIZONTAL_ALIGNMENT] =
+DocumentApp.HorizontalAlignment.RIGHT;
+hText[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
+hText[DocumentApp.Attribute.FONT_SIZE] = 18;
+hText[DocumentApp.Attribute.BOLD] = true;
+
+function adder(){
+  const doc = DocumentApp.getActiveDocument();
+  const body = doc.getBody();
+  const par = body.appendParagraph('TEST Hello World');
+  par.setAttributes(hText);
+}
+
+function myDocTest() {
+  const doc = DocumentApp.getActiveDocument().editAsText();
+  const doc1 = doc.insertText(50,'HELLO world\n');
+  doc1.setAttributes(20,40,hText);
+  Logger.log(doc);
+}
