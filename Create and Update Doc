@@ -1,0 +1,17 @@
+function myDocMaker() {
+  const doc = DocumentApp.create('doc name');
+  Logger.log(doc.getId());
+}
+
+function updateDoc(){
+  const id = '15ppjRsTnwQ';
+  const doc = DocumentApp.openById(id);
+  doc.setName('THIS one');
+  const body = doc.getBody();
+  Logger.log(body);
+  for(let x=0;x<10;x++){
+    const html = `New Paragraph ${x}`;
+      body.appendParagraph(html);
+  }
+ //body.appendHorizontalRule();
+}
