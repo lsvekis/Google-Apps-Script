@@ -1,0 +1,50 @@
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('Adv')
+    .addItem('Alert','show1')
+    .addItem('Prompt','show2')
+    .addToUi();
+}
+
+function checker(ui){
+  const res = ui.prompt('Your Name Please?',ui.ButtonSet.OK_CANCEL);
+  const btn = res.getSelectedButton();
+  const mes = res.getResponseText();
+  if(btn == ui.Button.OK && mes.length >0){
+    return 'Welcome, '+mes;
+  }else{
+    return checker(ui);
+  }
+}
+
+function show2(){
+  const ui = SpreadsheetApp.getUi();
+  let message = checker(ui);
+  ui.alert(message);
+}
+
+function show1(){
+  const ui = SpreadsheetApp.getUi();
+  const res = ui.alert('Ready?',ui.ButtonSet.YES_NO_CANCEL);
+  Logger.log(res);
+  let message = '';
+  if(res == ui.Button.YES){
+    message = 'Was Yes';
+  }else if (res == ui.Button.NO){
+    message = 'Oh NO!';
+  }else if (res == ui.Button.CANCEL){
+    message = 'Was Cancelled!';
+  }else if (res == ui.Button.CLOSE){
+    message = 'Really closed!!!';
+  }else{
+    message = 'No response';
+  }
+  ui.alert(message);
+}
+
+
+
+
+
+
+
