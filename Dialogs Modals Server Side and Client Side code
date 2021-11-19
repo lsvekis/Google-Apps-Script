@@ -1,0 +1,173 @@
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('Adv')
+    .addItem('CS to SS','show7')
+    .addItem('Model','show3')
+    .addItem('Model less','show4')
+    .addItem('Side Menu','show5')
+    .addItem('Pop Up','show6')
+    .addSeparator()
+    .addItem('Alert','show1')
+    .addItem('Prompt','show2')
+    .addToUi();
+}
+
+function getData(){
+  const html = '<h1>Hello World</h1>'
+  const data = SpreadsheetApp.getActiveSheet().getDataRange().getValues();
+  Logger.log(data);
+  return data;
+}
+
+function run1(val){
+  const ui = SpreadsheetApp.getUi();
+  let message = 'Clicked ' + val;
+  ui.alert(message);
+}
+
+function show7(){
+  const html = HtmlService.createHtmlOutputFromFile('loader');
+  SpreadsheetApp.getUi()
+   .showModelessDialog(html,'Client Side to Server Side');
+}
+
+function show6(){
+  const html = HtmlService.createHtmlOutputFromFile('show3');
+  SpreadsheetApp.getUi()
+   .showDialog(html); // Deprecated Method
+}
+
+function show5(){
+  const html = HtmlService.createHtmlOutputFromFile('show3');
+  Logger.log(html);
+  html.setTitle('Hello World');
+  SpreadsheetApp.getUi()
+   .showSidebar(html);
+}
+
+function show4(){
+  const html = HtmlService.createHtmlOutput('<h2>Hello</h2>');
+  Logger.log(html);
+  html.setHeight(400);
+  html.setWidth(800);
+  //html.setContent('<h1>Wow</h1>');
+  SpreadsheetApp.getUi()
+   .showModelessDialog(html,'Modeless');
+}
+
+function show3(){
+  const html = HtmlService.createHtmlOutputFromFile('show3');
+  Logger.log(html);
+  SpreadsheetApp.getUi()
+    .showModalDialog(html,'My Modal');
+}
+
+
+
+
+
+
+
+
+
+function checker(ui){
+  const res = ui.prompt('Your Name Please?',ui.ButtonSet.OK_CANCEL);
+  const btn = res.getSelectedButton();
+  const mes = res.getResponseText();
+  if(btn == ui.Button.OK && mes.length >0){
+    return 'Welcome, '+mes;
+  }else{
+    return checker(ui);
+  }
+}
+
+function show2(){
+  const ui = SpreadsheetApp.getUi();
+  let message = checker(ui);
+  ui.alert(message);
+}
+
+function show1(){
+  const ui = SpreadsheetApp.getUi();
+  const res = ui.alert('Ready?',ui.ButtonSet.YES_NO_CANCEL);
+  Logger.log(res);
+  let message = '';
+  if(res == ui.Button.YES){
+    message = 'Was Yes';
+  }else if (res == ui.Button.NO){
+    message = 'Oh NO!';
+  }else if (res == ui.Button.CANCEL){
+    message = 'Was Cancelled!';
+  }else if (res == ui.Button.CLOSE){
+    message = 'Really closed!!!';
+  }else{
+    message = 'No response';
+  }
+  ui.alert(message);
+}
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    Hello World
+    <button>Close</button>
+    <script>
+      const btn = document.querySelector('button');
+      btn.addEventListener('click',(e)=>{
+        google.script.host.close();
+      })
+      </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      table, td{
+        border:1px solid #ddd;
+      }
+      </style>
+  </head>
+  <body>
+    <div class="output"></div>
+    <button class="btn1">Adder</button>
+    <button class="btn2">Invoke</button>
+    <button class="btn3">Data</button>
+    <script>
+      const output = document.querySelector('.output');
+      let counter = 0;
+      const btn1 = document.querySelector('.btn1');
+      const btn2 = document.querySelector('.btn2');
+      const btn3 = document.querySelector('.btn3');
+      btn1.addEventListener('click',(e)=>{
+        counter++;
+        output.textContent = `Clicked ${counter}`;
+      })
+      btn2.addEventListener('click',(e)=>{
+        google.script.run.run1(counter);
+      })
+      btn3.addEventListener('click',(e)=>{
+        google.script.run.withSuccessHandler(success).getData();
+      })
+
+      function success(data){
+        let html = '<table>';
+        data.forEach((row)=>{
+          html += '<tr>'
+          row.forEach((cell)=>{
+            html += `<td>${cell}</td>`;
+          })
+          html += '</tr>'
+        })
+        html += '</table>'
+        output.innerHTML = html;
+      }
+      </script>
+  </body>
+</html>
