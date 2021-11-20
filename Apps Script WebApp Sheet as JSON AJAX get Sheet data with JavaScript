@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sheet data</title>
+        <style>
+            .box{
+                border:1px solid #ddd;
+                padding:5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="output">Hi</div>
+        <script src="app.js"></script>
+    </body>
+</html>
+
+const output = document.querySelector('.output');
+const btn = document.createElement('button');
+const output1 = document.createElement('div');
+output.textContent = '';
+output.append(btn);
+output.append(output1);
+btn.textContent = 'Load Sheet Data';
+const url = 'https://script.google.com/macros/s/A****EB6dxHz9KKxB7luyM_RWHquPCXGskoQ/exec';
+//output.textContent ='Hello World';
+document.addEventListener('DOMContentLoaded',init);
+btn.addEventListener('click',init);
+function init(){
+    console.log('ready');
+    output1.innerHTML = 'Loading.... ';
+    fetch(url)
+        .then((res)=> {return res.json()})
+        .then((data)=>{
+            makeOutput(data);
+        })
+}
+
+function makeOutput(res){
+    console.log(res.status);
+    output1.innerHTML = '';
+    res.data.forEach((row)=>{
+        console.log(row);
+        const div = document.createElement('div');
+        output1.append(div);
+        div.innerHTML = `${row.first} ${row.last} [${row.id}]`;
+        div.classList.add('box');
+        if(row.status){
+            div.style.color = 'black';
+        }else{
+            div.style.color = 'red'; 
+        }
+    })
+}
+
+function outputData() {
+  const id = '1zhez9FBfG****8Pspud_10h1A_TntCc';
+  const sheetName = 'data1';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName(sheetName);
+  const range = sheet.getDataRange();
+  const data = range.getValues();
+  const headings = data[0].map((val)=>{
+    //Logger.log(val);
+    return val.toString().toLowerCase();
+  })
+  const rows = data.slice(1);
+  return (covObjects(rows,headings));
+}
+
+function covObjects(rows,headings){
+  const temp = rows.map((row)=>{
+    const myObj = {};
+    headings.forEach((heading,index)=>{
+      myObj[heading] = row[index];
+    })
+    return myObj;
+  })
+  return temp;
+}
+
+function doGet(e){
+  const output = JSON.stringify({
+    status:'success',
+    data:outputData()
+  })
+  return ContentService.createTextOutput(output).setMimeType(ContentService.MimeType.JSON);
+}
+
+
+
+/*
+function doGet(){
+  const html = HtmlService.createTemplateFromFile('data1');
+  html.myStr = '<h1>Hello World 7</h1>';
+  return html.evaluate();
+}
+*/
