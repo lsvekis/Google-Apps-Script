@@ -1,0 +1,32 @@
+function doGet(e){
+  let id = '1Ypgk3FCRN-70jvWwKKEUll7zIfTY';
+  if('id' in e.parameter){
+    id = e.parameter['id']
+  }
+  let html = '<h1>Laurence Svekis</h1>';
+  const url = 'https://docs.google.com/feeds/download/documents/export/Export?id='+id+'&exportFormat=html';
+  const param = {
+    method :"get",
+    headers : {
+      "Authorization":"Bearer "+ScriptApp.getOAuthToken()
+    },
+    muteHttpExceptions:true
+  };
+  html = UrlFetchApp.fetch(url,param).getContentText();
+  return HtmlService.createHtmlOutput(html);
+}
+
+function testHTML(){
+  const id = '1Ypgk3FCRN-s70jvWwKKEUll7zIfTY';
+  const url = 'https://docs.google.com/feeds/download/documents/export/Export?id='+id+'&exportFormat=html';
+  const param = {
+    method :"get",
+    headers : {
+      "Authorization":"Bearer "+ScriptApp.getOAuthToken()
+    },
+    muteHttpExceptions:true
+  };
+  html = UrlFetchApp.fetch(url,param).getContentText();
+  Logger.log(html);
+}
+
