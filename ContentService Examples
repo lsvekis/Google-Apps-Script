@@ -1,0 +1,33 @@
+function doGet(){
+  const id = '1zhez9FBfGRjs8SRK58SjJ2BTu8Pspud_10h1A_TntCc';
+  const data = SpreadsheetApp.openById(id).getSheetByName('data1').getDataRange().getValues();
+  Logger.log(data);
+  return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+}
+
+
+/* function doGet(){
+  //const url = 'https://randomuser.me/api/?results=10';
+  const url = 'https://basescripts.com/feed/?feed=json';
+  const data = UrlFetchApp.fetch(url).getContentText();
+  Logger.log(data);
+  return ContentService.createTextOutput(data).setMimeType(ContentService.MimeType.JSON);
+} */
+
+
+/* function doGet(e) {
+  const val = {
+    test: "hello",
+    test1: "world",
+    test3: 5
+  }
+  const myTxt = JSON.stringify(val);
+  return ContentService.createTextOutput(myTxt).setMimeType(ContentService.MimeType.JSON);
+} */
+
+
+/* function doGet(e) {
+  const val = 'Hello World 2';
+  return ContentService.createTextOutput(val);
+} */
+
