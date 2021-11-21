@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <h1>Laurence Svekis</h1>
+    <input value="Laurence"><button>Adder</button>
+    <button class="btn2">Get User</button>
+    <script>
+      const btn = document.querySelector('button');
+      const btn2 = document.querySelector('.btn2');
+      const myInput = document.querySelector('input');
+      const h1Val = document.querySelector('h1');
+      btn2.onclick = function(){
+        google.script.run.withSuccessHandler(addUser).findMyUser();
+      }
+      btn.onclick = function(){
+          google.script.run.withFailureHandler(failCall).withSuccessHandler(success).fun1(myInput.value);
+      }
+
+      function addUser(res){
+          myInput.value = res;
+      }
+
+      function success(val){
+        h1Val.textContent = val;
+      }
+      function failCall(val){
+        h1Val.textContent = val;
+      }
+      </script>
+  </body>
+</html>
+
+
+
+function doGet(){
+  const html = HtmlService.createHtmlOutputFromFile('output');
+  return html;
+}
+
+function findMyUser(){
+  return Session.getActiveUser().getEmail();
+}
+
+function fun1(val){
+  const id = '1zhez9FBfGRjs8SRK58SjJ2BTu8Pspud_10h1A_TntCc';
+  const ss = SpreadsheetApp.openById(id).getSheetByName('log');
+  ss.appendRow([val]);
+  return val;
+}
+
