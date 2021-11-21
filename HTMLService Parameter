@@ -1,0 +1,27 @@
+function doGet(e){
+  const vals = JSON.stringify(e);
+  let html = '<h1>Hello</h1>';
+  if('name' in e.parameters){
+    html += '<div>'+e.parameters['name'][0]+'</div>';
+    
+  }
+  if('name' in e.parameter){
+    html += '<h2>'+e.parameter['name']+'</h2>';
+  }
+  if('row' in e.parameter){
+    const row = e.parameter['row'] -1;
+    const id = '1zhez9FBfGRjs8SRK58SjJ2BTu8Pspud_10h1A_TntCc';
+    const data = SpreadsheetApp.openById(id).getSheetByName('data1').getDataRange().getValues();
+    if(row < data.length){
+      html += '<h2>'+JSON.stringify(data[row])+'</h2>';
+    }else{
+      html += '<h2>Row was not available</h2>';
+    }
+  }
+  html += '<small>'+vals+'</small>';
+  return HtmlService.createHtmlOutput(html);
+}
+
+/* function doGet(){
+  return HtmlService.createHtmlOutputFromFile('index');
+} */
