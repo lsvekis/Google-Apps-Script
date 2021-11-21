@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <?!= include('style'); ?>
+  </head>
+  <body>
+    <? const id = '1zhez9FBfGRjs8SRK58SjJ2BTu8Pspud_10h1A_TntCc';
+    const output1 = SpreadsheetApp.openById(id).getSheetByName('data1')
+    .getDataRange().getValues(); ?>
+    <ul>
+    <? output1.forEach((row)=>{ ?><li>
+      <?= row ?></li>
+    <? })?></ul>
+
+    <? if(data.val > 5) { ?>
+      <div>Was larger than 5 </div>
+    <? } else { ?>
+      <div>Was SMALLER than 5 </div>
+    <? } ?><hr>
+    <?= JSON.stringify(data) ?>
+    <hr>
+    <?!= data.output ?><hr>
+    <?= data.str ?><hr>
+    <?!= include('main'); ?><hr>
+    <?!= adder(2); ?><hr>
+    <?!= include('js'); ?><hr>
+  </body>
+</html>
+
+
+
+function doGet(){
+  const html = HtmlService.createTemplateFromFile('index');
+  html.data = {
+    output : '<div style="background-color:blue">Laurence Svekis</div>',
+    str : 'Hello World',
+    val : 1
+  };
+  return html.evaluate();
+}
+
+function include(filename){
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+function findBugs(){
+  Logger.log(HtmlService.createTemplateFromFile('index').getCode());
+}
+
+
+
+
+function adder(row){
+  const id = '1zhez9FBfGRjs8SRK58SjJ2BTu8Pspud_10h1A_TntCc';
+  const data = SpreadsheetApp.openById(id).getSheetByName('quiz').getDataRange().getValues();
+  return JSON.stringify(data[row][0]);
+}
+
+/* function doGet(e){
+  const html = '<h1>Laurence Svekis</h1>';
+  return HtmlService.createHtmlOutput(html);
+} */
+
+    <h1>Hello World</h1>
+    <div>Laurence Svekis</div>
+
+<style>
+  body{
+    background-color:red;
+  }
+</style>
+
+<script>
+  const output = document.querySelector('h1');
+  output.textContent = 'Laurence Svekis';
+  console.log(output);
+</script>
