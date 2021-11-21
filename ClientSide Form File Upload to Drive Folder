@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <div class="message"></div>
+    <form>
+      <input name="upFile" type="file">
+      <input type="submit" value="add File">
+    </form>
+    <script>
+      const myForm = document.querySelector('form');
+      const myUpload = document.querySelector('input[name="upFile"]');
+      const message = document.querySelector('.message');
+      myForm.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        message.textContent = 'Form Submitted';
+        const file = myUpload.files[0];
+        const fileR = new FileReader();
+        fileR.onload = function(e){
+          const vals = fileR.result.split(',');
+          const obj = {
+            fileName:file.name,
+            mimeType :file.type,
+            data : vals[1]
+          }
+          console.log(obj);
+          google.script.run.withSuccessHandler(myResult).adderFile(obj);
+        }
+        fileR.readAsDataURL(file);
+      })
+      function myResult(val){
+        message.innerHTML = `<a href="${val.url}" target="_blank">${val.name}</a>`;
+      }
+      </script>
+  </body>
+</html>
+
+function doGet(){
+  return HtmlService.createHtmlOutputFromFile('upload');
+}
+
+function adderFile(data){
+  const myFile = Utilities.newBlob(Utilities.base64Decode(data.data),data.mimeType,data.fileName);
+  const id = '1Yi2Sh6UZgFsM7gZ5-XxeOlFSL5PV78jT';
+  const sid = '1zhez9FBfGRjs8SRK58SjJ2BTu8Pspud_10h1A_TntCc';
+  const folder = DriveApp.getFolderById(id);
+  const fileAdded = folder.createFile(myFile);
+  const ss = SpreadsheetApp.openById(sid ).getSheetByName('log');
+  ss.appendRow([fileAdded.getUrl(),data.fileName,data.mimeType,fileAdded.getId()]);
+  const rep = {
+    'url' : fileAdded.getUrl(),
+    'name' : data.fileName
+  };
+  return rep;
+}
+
