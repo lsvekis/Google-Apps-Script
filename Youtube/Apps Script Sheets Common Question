@@ -1,0 +1,149 @@
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('adv menu')
+    .addItem('log','myLog')
+    .addItem('info','myInfo')
+    .addItem('email','myEmailer')
+    .addItem('PDF','myPDF')
+    .addToUi();
+}
+function doGet(e){
+  if(e.parameter.id){
+    sheetLogger(e.parameter.id);
+    adder(e.parameter.id);
+  }else{
+    sheetLogger(JSON.stringify(e));
+  }
+  return ContentService.createTextOutput(JSON.stringify(e));
+}
+function myPDF(){
+   const data = checkSel();
+   if(data.sName == 'Users' && data.results){
+     createmyPDF(data.results);
+     sheetLogger('PDF Made '+data.results.first);
+   }else{
+    SpreadsheetApp.getUi().alert('Sorry no Data!');
+  }  
+}
+function createmyPDF(user){
+  const fid = '1pbtYVjLkrYP_97ON9lgTG8YxYb-a5bgu';
+  const docID = '1gTPJ2rV0BPTP1qTr4-jnH7M5kY2JZVTnd40fPtO_SX8';
+  const docTemp = DriveApp.getFileById(docID);
+  const mainfolder = DriveApp.getFolderById(fid);
+  const docNew = docTemp.makeCopy(mainfolder);
+  const editNew = DocumentApp.openById(docNew.getId());
+  const body = editNew.getBody();
+  body.replaceText('{first}',user.first);
+  body.replaceText('{last}',user.last); 
+  editNew.saveAndClose();
+  const myBlob = docNew.getAs(MimeType.PDF);
+  const newPDF = mainfolder.createFile(myBlob).setName(user.first+user.last);
+  SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Users').getRange(user.row,6).setValue(newPDF.getUrl());
+  if(user.email) sendtoEmail(user,newPDF);
+  docNew.setTrashed(true);
+  return newPDF;
+}
+function sendtoEmail(data,newPDF){
+  const userEmail = Session.getActiveUser().getEmail();
+  const message =  `Complete : ${data.first} ${data.last} Send to email ${data.email}`;
+  try {
+    MailApp.sendEmail(userEmail,'PDF Ready',message,{
+      attachments:[newPDF]
+    })
+  } catch(e){}
+}
+function adder(myid){
+  const id = '1xPf8wXM0cMO7Sh9U9vKzxCIiWP_IbIzBLkFw2rd7vuQ';
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('Users');
+  const data = sheet.getDataRange().getValues();
+  for(let i=0;i<data.length;i++){
+    if(data[i][0] == myid){
+      const curRange = sheet.getRange(i+1,7,1,1);
+      let tempVal = curRange.getValue();
+      tempVal++;
+      curRange.setValue(tempVal);
+    }
+  }
+}
+function myEmailer(){
+   const data = checkSel();
+   if(data.sName == 'Users' && data.results){
+     sendUser(data.results);
+     sheetLogger('email sent '+data.results.email);
+   }else{
+    SpreadsheetApp.getUi().alert('Sorry no Data!');
+  }
+}
+function sendUser(user){
+  const temp = HtmlService.createTemplateFromFile('temp');
+  temp.user = user;
+  let message = temp.evaluate().getContent();
+  message += 'id:'+user.id;
+  message += tracker(user.id);
+  MailApp.sendEmail({
+    to:user.email,
+    subject:'Tester Email',
+    htmlBody:message
+  })
+  SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Users').getRange(user.row,5).setValue('send');
+}
+function tracker(id){
+  const url = 'https://script.google.com/macros/s/AKfycbyaVHKcqjTkjXpbRVXt3qRFo4_PaP91drK_qzrAcrLeY3pfvnRWHbiqEK0T_hKKtqwWBg/exec';
+  return "<img src='"+url+"?id="+id+"' width='1' height='1' />";
+}
+function myLog(){
+  sheetLogger('Hello World');
+}
+function myInfo(){
+  const data = checkSel();
+  //Logger.log(data);
+  if(data.sName == 'Users' && data.results){
+    const html = HtmlService.createTemplateFromFile('temp');
+    html.user = data.results;
+    const htmlOutput = HtmlService.createHtmlOutput(html.evaluate().getContent())
+      .setWidth(250).setHeight(300);
+    SpreadsheetApp.getUi()
+      .showModelessDialog(htmlOutput,'Details');
+    sheetLogger('info '+data.results.first);
+  }else{
+    SpreadsheetApp.getUi().alert('Sorry no Data!');
+  }
+}
+function checkSel(){
+  const ss = SpreadsheetApp.getActive();
+  const sheetName = ss.getActiveSheet().getSheetName();
+  if(sheetName == 'Users') {
+    const range = ss.getSelection().getActiveRange();
+    if(range.getRow() <= ss.getLastRow()){
+      return {
+        sName:sheetName,
+        results:getmyUser(range.getRow(),ss.getLastColumn())
+      }
+    }
+  }
+  return {
+    sName : sheetName,
+    results : null
+  }
+}
+function getmyUser(row,cols){
+  const vals = SpreadsheetApp.getActive().getActiveSheet().getSheetValues(row,1,1,cols)[0];
+  return {
+    id : vals[0],
+    first : vals[1],
+    last : vals[2],
+    email : vals[3],
+    row : row
+  }
+}
+function sheetLogger(message){
+  const id = '1xPf8wXM0cMO7Sh9U9vKzxCIiWP_IbIzBLkFw2rd7vuQ';
+  const ss = SpreadsheetApp.openById(id);
+  let sheetLog = ss.getSheetByName('log');
+  if(sheetLog == null){
+    sheetLog = ss.insertSheet();
+    sheetLog.setName('log');
+    sheetLog.appendRow(['Messages','Date']);
+  }
+  sheetLog.appendRow([message,new Date()]);
+}
