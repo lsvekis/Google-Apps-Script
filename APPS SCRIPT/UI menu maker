@@ -1,0 +1,71 @@
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Adv')
+    .addItem('Test 1','test1')
+    .addItem('Test 2','test2')
+    .addItem('Test 3','test3')
+    .addToUi();
+}
+
+function test1(){
+  const ss = SpreadsheetApp.getActiveSheet();
+  const data = ss.getActiveRange().getValues();
+  let mes = '';
+  data.forEach(ele =>{
+    ele.sort();
+    let output = ele.join('|');
+    mes += output + '\n';
+  })
+  //Logger.log(mes);
+  outputMessage(mes);
+}
+function test2(){
+  const ss = SpreadsheetApp.getActiveSheet();
+  const data = ss.getActiveRange().getValues();
+  data.forEach((row,ind) =>{
+    const checker = row.indexOf('Laurence');
+    if(checker  != -1 ){
+      Logger.log(checker+1);
+      Logger.log(ind+1);
+      const range = ss.getActiveRange();
+      const x = range.getRow() + ind;
+      const y = range.getColumn() + checker;
+      const cell = ss.getRange(x,y);
+      cell.setBackground('yellow');
+      //outputMessage(`${x} x ${y}`);
+    }
+  })
+}
+function test3(){
+   const ss = SpreadsheetApp.getActiveSheet();
+   const range = ss.getActiveRange();
+   const data = range.getValues();
+   const holder = [];
+   let counter = 0;
+   data.forEach((row)=>{
+     const upArr = row.map((val)=>{
+       const dotInd = val.toString().indexOf('.');
+       //Logger.log(dotInd);
+       let output = val.toString().trim();
+       if(dotInd != -1){
+         output = val.toString().slice(dotInd+1).trim();
+       }
+       counter++;
+       return `${counter}. ${output.toString()}`;
+     })
+     holder.push(upArr);
+   })
+   Logger.log(holder);
+   range.setValues(holder);
+   range.clearFormat();
+ 
+}
+
+function outputMessage(val){
+  SpreadsheetApp.getUi().alert(val);
+}
+
+
+
+
+
