@@ -1,0 +1,30 @@
+function doGet(e) {
+  let html = `<h1>Hello World 3</h1>`;
+  const eData = JSON.stringify(e);
+  if('id' in e.parameter){
+    let val = e.parameter['id'];
+    let data = buildHTML(val);
+    html += `<div>Found Row #${e.parameter['id']}</div>`;
+    html += `<h2>${data[2]}</h2>`;
+  }
+  html += `<div>${eData}</div>`;
+  return HtmlService.createHtmlOutput(html);
+}
+
+function test1(){
+  const val = buildHTML(1);
+  Logger.log(val[2]);
+}
+
+
+
+function buildHTML(row){
+  row = row-1 || 0;
+  const id = '1aSBcG-tw-zZzkelCGXIm465ky4ZcId9mgOMyXNk0Pzg';
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('Sheet2');
+  const data = sheet.getDataRange().getValues();
+  return data[row];
+}
+
+
+
