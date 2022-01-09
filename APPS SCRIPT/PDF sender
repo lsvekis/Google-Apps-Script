@@ -1,0 +1,28 @@
+function pdfMaker() {
+  const id = '1yXiEb6EDJlRyEAskPqiiyNh52pCcVLOJ2t9dzJKvneU';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('data');
+  const data = sheet.getDataRange().getValues().slice(1);
+  data.forEach((row,ind)=>{
+    let html = `<h1>${row[0]} ${row[1]}</h1>`;
+    html += `<div>Welcome your id is ${row[2]}</div>`;
+    html += `<div>Thank You</div>`;
+    const blob = Utilities.newBlob(html,MimeType.HTML);
+    blob.setName(`${row[0]} ${row[1]}.pdf`);
+    const email = row[3];
+    const subject = `New PDF ${row[0]} ${row[1]}`;
+    MailApp.sendEmail({
+      to:email,
+      subject:subject,
+      htmlBody:html,
+      attachments:[blob.getAs(MimeType.PDF)],
+    });
+    sheet.getRange(ind+2,5).setValue('sent');
+    Logger.log(blob);
+  })
+}
+
+
+
+
+
