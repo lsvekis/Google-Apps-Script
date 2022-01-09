@@ -1,0 +1,33 @@
+function myData(){
+ const ss = SpreadsheetApp.getActiveSpreadsheet();
+ const sheet = ss.getSheetByName('data');
+ const rows = sheet.getDataRange().getValues();
+ const data = rows.slice(1);
+ data.forEach((row,ind)=>{
+   const val = makerDoc(row,ind);
+   const updateRange = sheet.getRange(val.row,5);
+   updateRange.setValue(val.message);
+ 
+ })
+ //Logger.log(data);
+}
+ 
+function makerDoc(data,ind){
+ //Logger.log(data);
+ const rowVal = ind + 2;
+ let message = `${data[0]} ${data[1]}`;
+ const docName = `${data[0]} ${data[1]} ${rowVal}`;
+ const doc = DocumentApp.create(docName);
+ const bodyData = `${docName} Hello and Welcome. your id is ${data[2]}`;
+ const body = doc.getBody();
+ body.appendParagraph(bodyData);
+ const url = doc.getUrl();
+ message += ` Your doc is located at ${url}`;
+ body.appendParagraph(message);
+ const email = data[3];
+ const subject = `${docName} created`;
+ const emailBody = `Your doc is created at ${url}`;
+ MailApp.sendEmail(email,subject,emailBody);
+ //Logger.log(docName);
+ return {row:rowVal,message:message};
+}
