@@ -1,0 +1,61 @@
+function MYCUSTOM(val) {
+  const rep = val * val + 10;
+  return rep;
+}
+
+function MYDOUBLER(val) {
+  return val * 2;
+}
+
+function MYTEST(val) {
+  return val;
+}
+
+function FULLNAME(first,last){
+  const val = `${first} ${last}`
+  return `${val} ${val.length}`;
+}
+
+function SALESTAX(val) {
+  return val * 0.15;
+}
+
+function LATLONGFIND(val){
+  const geoCoder = Maps.newGeocoder();
+  try {
+    const loc = geoCoder.geocode(val);
+    if(loc.status){
+    const locat = loc.results[0].geometry.location;
+    return `lat:${locat.lat} long:${locat.lng}`;
+    }else{
+    return 'Not Found';}
+  } catch(error) {
+    return 'Not Found';
+  }
+}
+
+function test(){
+  const geoCoder = Maps.newGeocoder();
+  const val = 'Toronto';
+  const loc = geoCoder.geocode(val);
+  if(loc.status){
+    Logger.log(loc.results[0].geometry.location);
+    const locat = loc.results[0].geometry.location;
+    Logger.log(`lat:${locat.lat} long:${locat.lng}`);
+    return `lat:${locat.lat} long:${locat.lng}`;
+  }else{
+    return 'Not Found';
+  }
+  
+}
+
+
+
+
+
+
+
+
+
+
+
