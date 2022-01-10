@@ -1,0 +1,48 @@
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Adv')
+  .addItem('test1','test1')
+  .addItem('test2','test2')
+  .addToUi();
+  logMe();
+}
+
+function createTimers(){
+  ScriptApp.newTrigger('logMe')
+    .timeBased()
+    .everyHours(4)
+    .create();
+}
+
+function logMe(){
+  const id = '13UFJVM0ACo9mTDjNJnt_HBAJRcNtTYPwW-Wc0dOqU_s';
+  const ss = SpreadsheetApp.openById(id).getSheetByName('log');
+  const ran = Math.floor(Math.random()*1000);
+  ss.appendRow(['test',ran]);
+}
+
+
+function onEdit(e){
+  //output(JSON.stringify(e));
+}
+
+
+
+
+function test1(){
+  output('test1');
+}
+
+function test2(){
+  output('test2');
+}
+
+function output(val){
+  SpreadsheetApp.getUi().alert(val);
+}
+
+
+
+
+
+
