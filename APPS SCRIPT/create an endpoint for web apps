@@ -1,0 +1,92 @@
+index.html
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript Course</title>     
+    </head>
+    <body>
+        <input type="number" value='1'>
+        <button>Check</button>
+        <div class="output">Output</div>
+        <script src="gas.js"></script>
+    </body>
+</html>
+
+gas.js
+const url = 'https://script.google.com/macros/s/AKfycbxBHUXc5rPxG2TPYNSFFGBTEaoz5WDj0e7WiHhjeKQ_PO3RtI94X5t3IN8IBvrrEFgktw/exec';
+const output = document.querySelector('.output');
+const btn = document.querySelector('button');
+const myInput = document.querySelector('input');
+const ul = document.createElement('ul');
+output.innerHTML = '';
+output.append(ul);
+btn.addEventListener('click',(e)=>{
+    const formData = new FormData();
+    formData.append('row',myInput.value);
+    fetch(url,{
+        method:'POST',
+        body: formData
+    })
+        .then(res => res.json())
+        .then(data => {
+           console.log(data[1]);
+           addOutput(data[1]);
+        })
+})
+function addOutput(row){
+    const li = document.createElement('li');
+    ul.append(li);
+    li.innerHTML = `<div>${row.first} ${row.last} ${row.fullName}</div>`;
+}
+
+btn.addEventListener('click',(e)=>{
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            addData(data);
+        })
+})
+
+function addData(data){
+    output.innerHTML = '';
+    data.forEach((row) =>{
+        output.innerHTML += `<div>${row.first} ${row.last} ${row.fullName}</div>`;
+    })
+}
+
+*** APPs Script *** web app deployed
+function doPost(e) {
+  const id = '1aSBcG-tw-zZzkelCGXIm465ky4ZcId9mgOMyXNk0Pzg';
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('Sheet2');
+  const data = sheet.getDataRange().getValues();
+  const holder = [JSON.stringify(e)];
+  if('row' in e.parameter){
+    let val = e.parameter['row'];
+    val--;
+    let row = data[val];
+    const temp = {
+      first : row[0],
+      last : row[1],
+      fullName : row[2]
+    }
+    holder.push(temp);
+  }
+  return ContentService.createTextOutput(JSON.stringify(holder)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  const id = '1aSBcG-tw-zZzkelCGXIm465ky4ZcId9mgOMyXNk0Pzg';
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('Sheet2');
+  const data = sheet.getDataRange().getValues();
+  const holder = [];
+  data.forEach((row)=>{
+    const temp = {
+      first : row[0],
+      last : row[1],
+      fullName : row[2]
+    }
+    holder.push(temp);
+  })
+  Logger.log(holder);
+  return ContentService.createTextOutput(JSON.stringify(holder)).setMimeType(ContentService.MimeType.JSON);
+}
