@@ -1,0 +1,79 @@
+<script>
+  const data = <?!= JSON.stringify(data) ?>;
+  console.log(data);
+</script>
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <h1></h1>
+    <input type="text" name="first" value="Laurence">
+    <input type="text" name="last" value="Svekis">
+    <button>Add to Sheet</button>
+    <div class="output"></div>
+    <script>
+      const h1 = document.querySelector('h1');
+      const btn = document.querySelector('button');
+      const myFirst = document.querySelector('input[name="first"]');
+      const myLast = document.querySelector('input[name="last"]');
+      h1.textContent = data.data.first;
+      btn.addEventListener('click',(e)=>{
+        const temp = {
+          first : myFirst.value,
+          last : myLast.value
+        };
+        google.script.run.withSuccessHandler(onSuccess).testFun(temp);
+      })
+
+      function onSuccess(res){
+        console.log(res);
+        const html = `Item added to row #${res}`;
+        document.querySelector('.output').textContent = html;
+      }
+      </script>
+  </body>
+</html>
+
+function doGet() {
+  const myObj = {
+    first : 'Laurence',
+    last : 'Svekis',
+    id : 100
+  }
+  const html = HtmlService.createTemplateFromFile('index');
+  html.data = {
+    status : 'ready',
+    data : myObj
+  }
+  return html.evaluate();
+}
+
+function testFun(user){
+  const arr = [user.first,user.last];
+  const row = addtoSheet(arr);
+  return row;
+}
+
+function addtoSheet(data){
+  const id = '1aSBcG-tw-zZzkelCGXIm465ky4ZcId9mgOMyXNk0Pzg';
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('Sheet2');
+  sheet.appendRow(data);
+  return sheet.getLastRow();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
