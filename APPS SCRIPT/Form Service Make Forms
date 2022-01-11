@@ -1,0 +1,88 @@
+function makeQuiz(){
+  const nameForm = 'Quiz 3';
+  const form = FormApp.create(nameForm);
+  form.setIsQuiz(true);
+  form.setTitle(nameForm);
+  const que1 =  form.addCheckboxItem();
+  que1.setTitle('What is your fav app?');
+  que1.setPoints(10);
+  que1.setChoices([
+    que1.createChoice('Docs',true),
+    que1.createChoice('Sheets',true),
+    que1.createChoice('Slides',false),
+    que1.createChoice('Drive',false)
+  ])
+  const cor = FormApp.createFeedback().setText('Your are correct Docs :)').build();
+  const wro = FormApp.createFeedback().setText('Wrong').build();
+  que1.setFeedbackForCorrect(cor);
+  que1.setFeedbackForIncorrect(wro);
+
+  const que2 = form.addTextItem();
+  que2.setTitle('5 + 10?');
+  que2.setPoints(5);
+  const val = FormApp.createTextValidation().requireNumberBetween(1,100).build();
+  //.requireNumberEqualTo(15).build();
+  que2.setValidation(val);
+  Logger.log(form.getPublishedUrl());
+}
+
+function updaterForm1(){
+  const id = '1bo5jc4APUEwAs_222aswIfPDcvU7ZEgjcuhDcpqXOiU';
+  const form = FormApp.openById(id);
+  const que3 = form.addMultipleChoiceItem();
+  que3.setTitle('What app do you prefer?');
+  que3.setChoiceValues(['Docs','Sheets','Slides']);
+  //que3.showOtherOption();
+  const que4 = form.addCheckboxItem();
+  que4.setTitle('Are you enjoying this lesson?');
+  que4.setChoices([
+    que4.createChoice('Yes',true),
+    que4.createChoice('No',false),
+    que4.createChoice('Maybe',false)
+  ])
+  form.addPageBreakItem().setTitle('Page 2');
+  const que5 = form.addListItem();
+  que5.setTitle('Do you like?')
+    .setChoices([
+      que5.createChoice('Docs'),
+      que5.createChoice('Sheets')
+    ])
+}
+
+
+
+
+function updaterForm(){
+  const id = '1bo5jc4APUEwAs_222aswIfPDcvU7ZEgjcuhDcpqXOiU';
+  const form = FormApp.openById(id);
+  const que2 = form.addCheckboxItem();
+  que2.setTitle('What is your favorite Google App?');
+  que2.setChoices([
+    que2.createChoice('Docs'),
+    que2.createChoice('Sheets'),
+    que2.createChoice('Slides'),
+    que2.createChoice('Forms')
+  ])
+}
+
+function makeaForm() {
+  const nameForm = 'my Form 2';
+  const form = FormApp.create(nameForm );
+  const que1 = form.addTextItem();
+  que1.isRequired();
+  que1.setTitle('Your first Name')
+  Logger.log('URL'+form.getPublishedUrl());
+  Logger.log('ID '+form.getId());
+  const email = Session.getActiveUser().getEmail();
+  Logger.log(email);
+  const url = form.getPublishedUrl();
+  const id = form.getId();
+  let html  = `<h1>New Form ${nameForm}</h1>`;
+  html += `<div>Your form is at ${url}</div>`;
+  html += `<div>Your form id is ${id}</div>`;
+  MailApp.sendEmail({
+    to: email,
+    subject : 'New form ' + nameForm,
+    htmlBody : html
+  });
+}
