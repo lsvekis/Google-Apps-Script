@@ -1,0 +1,57 @@
+function makeTrigger() {
+  const sheet = SpreadsheetApp.getActive();
+  ScriptApp.newTrigger('adder')
+    .forSpreadsheet(sheet)
+    .onFormSubmit()
+    .create();
+}
+
+function adder(user){
+  const id = '14MXkJF5AykU9ND-z4strmly5zN_ant403-6YA6br0PY';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('log');
+  const userinfo = {
+    first : user.namedValues["First"][0],
+    email : user.namedValues["Email Address"][0],
+    last : user.namedValues["Last"][0],
+    row : user.range.rowStart
+  }
+  const json = JSON.stringify(userinfo);
+  const arr = Object.values(userinfo);
+  arr.push(json);
+  sheet.appendRow(arr);
+  sender(userinfo);
+}
+
+function test1(){
+  const user = {"authMode":"FULL","namedValues":{"Email Address":["gappscourses@gmail.com"],"Last":["Svekis"],"Timestamp":["1/1/2022"],"First":["Laurence"]},"range":{"columnEnd":4,"columnStart":1,"rowEnd":2,"rowStart":2},"source":{},"triggerUid":"7667511207665245324","values":["1/1/2022","gappscourses@gmail.com","Laurence","Svekis"]}
+  const userinfo = {
+    first : user.namedValues["First"][0],
+    email : user.namedValues["Email Address"][0],
+    last : user.namedValues["Last"][0],
+    row : user.range.rowStart
+  }
+  Logger.log(userinfo);
+  sender(userinfo);
+}
+
+function sender(user){
+  let html = `<h1>Hi ${user.first} ${user.last}</h1>`;
+  html += '<div>Thank you for submitting your form</div>'
+  html += '<table><tr>';
+  for(key in user){
+    const val = user[key];
+    html += `<td>${val}</td>`;
+  }
+  html += '</tr></table>';
+  html += '<div>Have a nice day, Laurence</div>';
+  const blob = Utilities.newBlob(html,MimeType.HTML);
+  blob.setName(`PDF for ${user.first}.pdf`);
+  MailApp.sendEmail({
+    recipient:user.email,
+    subject:'Form submitted',
+    htmlBody:html,
+    cc : 'gappscourses@gmail.com',
+    attachments:[blob.getAs(MimeType.PDF)]
+  });
+}
