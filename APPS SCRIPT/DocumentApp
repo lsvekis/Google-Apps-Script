@@ -1,0 +1,67 @@
+function updateDoc(){
+  const id = '1i6Ybb7rvAtYrUAYgi0rCNKnw_qJmdlHv_NteVkQ_zLw';
+  const doc = DocumentApp.openById(id);
+  Logger.log(doc.getName());
+  const body = doc.getBody();
+  body.clear();
+  const heading = body.appendParagraph('Laurence Svekis');
+  Logger.log(heading);
+  heading.setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  const style = {};
+  style[DocumentApp.Attribute.FOREGROUND_COLOR] = '#ff0000';
+  style[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
+
+  const style1 = {};
+  style1[DocumentApp.Attribute.FOREGROUND_COLOR] = '#000000';
+
+
+  const myTable = [
+    ['Col 1','Col 2','Col 3'],
+    ['1','Laurence','Svekis'],
+    ['2','Jane','Doe']
+  ];
+  const tab1 = body.appendTable(myTable);
+  tab1.setAttributes(style1);
+  Logger.log(tab1);
+  //tab1.appendTableRow().appendTableCell('3');
+  const arr = ['3','Jack','Jones'];
+  const row = tab1.appendTableRow();
+  Logger.log(row);
+  arr.forEach((ele)=>{
+    row.appendTableCell(ele);
+  })
+
+  body.appendHorizontalRule();
+  const url = 'http://www.discoveryvip.com/img/d.png';
+  const img = UrlFetchApp.fetch(url);
+  body.appendImage(img);
+
+
+  const list1 = body.appendListItem('New item 1');
+  Logger.log(list1.getListId());
+  list1.appendText(' more text');
+  body.appendHorizontalRule();
+  for(let i=0;i<10;i++){
+    const li = body.appendListItem(`Item ${i}`);
+    li.setListId(list1);
+  }
+  const myLi  = body.getChildIndex(list1);
+  Logger.log(myLi);
+  const newLi = body.insertListItem(myLi+1,'New Item ADDED**');
+  for(let i=0;i<5;i++){
+    const li = body.insertListItem(myLi+2+i,`NEW!!!!! ${i}`);
+  }
+  const par1 = body.appendParagraph('Hello World');
+  Logger.log(par1);
+  par1.appendText('Add New Text');
+  heading.setAttributes(style);
+}
+
+
+
+
+function makeDoc() {
+  const doc = DocumentApp.create('New Doc 1');
+  Logger.log(doc.getUrl());
+  Logger.log(doc.getId());
+}
