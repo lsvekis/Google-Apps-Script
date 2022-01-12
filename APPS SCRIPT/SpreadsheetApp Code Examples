@@ -1,0 +1,70 @@
+function cleaner(){
+  const id = '1vliRFwXoINpk1Hg8x6Zb7Rgm2MI4yg9ZzKhE3Mp3FMA';
+  const ss = SpreadsheetApp.openById(id);
+  const sheets = ss.getSheets();
+  sheets.forEach((sheet)=>{
+    const data = sheet.getDataRange().getValues();
+    if(data.length <= 1){
+      Logger.log(sheet.getSheetName());
+      ss.deleteSheet(sheet);
+    };
+  })
+}
+
+function adder2(){
+  const id = '1vliRFwXoINpk1Hg8x6Zb7Rgm2MI4yg9ZzKhE3Mp3FMA';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('S7');
+  const arr = ['Coding','Car','Hello','World','Website'];
+  arr.forEach((val,ind)=>{
+    const sp = LanguageApp.translate(val,'en','es');
+    const lv = LanguageApp.translate(val,'en','lv');
+    const ko = LanguageApp.translate(val,'en','ko');
+    sheet.appendRow([ind+1,val,sp,lv,ko]);
+  })
+}
+
+function adder1(){
+  const id = '1vliRFwXoINpk1Hg8x6Zb7Rgm2MI4yg9ZzKhE3Mp3FMA';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheets()[0];
+  const arr = ['Hello','World','Website'];
+  sheet.appendRow(arr);
+  const range1 = sheet.getRange(1,5);
+  range1.setValue('Laurence');
+  const range2 = sheet.getRange(2,1,2);
+  range2.setValues([[1],[2]]);
+  const range3 = sheet.getRange(4,2,2,3);
+  range3.setValues([[1,2,3],[4,5,6]]);
+  const range4 = sheet.getRange('E3');
+  range4.setValue('Svekis');
+  const range5 = sheet.getRange('S6!A1:C3');
+  range5.setValues([[1,2,3],[4,5,6],[7,8,9]]);
+}
+
+function upSheet1(){
+  const id = '1vliRFwXoINpk1Hg8x6Zb7Rgm2MI4yg9ZzKhE3Mp3FMA';
+  const ss = SpreadsheetApp.openById(id);
+  for(let i=0;i<10;i++){
+    const sheetNamer = `S${i+1}`;
+    let newName = ss.getSheetByName(sheetNamer);
+    if(!newName){
+       newName = ss.insertSheet();
+       newName.setName(sheetNamer);
+    }
+  }
+  const sheets = ss.getSheets();
+  Logger.log(sheets);
+  sheets.forEach((sheet,index)=>{
+    Logger.log(sheet.getSheetName());
+  })
+}
+
+function makeSheet() {
+  const ss = SpreadsheetApp.create('NewSheets',30,7);
+  Logger.log(ss.getUrl());
+  const email = Session.getActiveUser().getEmail();
+  const url = ss.getUrl();
+  const body = `New Sheet at ${url}`;
+  MailApp.sendEmail(email,'Sheet',body);
+}
