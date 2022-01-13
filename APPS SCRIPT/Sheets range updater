@@ -1,0 +1,282 @@
+function sheet4(){
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test2');
+  const range = sheet.getDataRange();
+  range.randomize();
+  range.removeDuplicates();
+  range.merge();
+}
+
+function sheet3() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  const rows = sheet.getLastRow()-1;
+  const range2 = sheet.getRange(2,5,rows,1);
+  range2.setBackground(ranBack());
+  range2.setFontColor(ranBack());
+  const range3 = sheet.getRange(2,1,rows,4);
+  Logger.log(range3.getValues());
+  range3.randomize();
+
+}
+
+function ranBack(){
+  const val = `#${Math.random().toString(16).substring(2,8)}`;
+  Logger.log(val);
+  return val;
+}
+
+function sheet2() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  const rows = sheet.getLastRow()-1;
+  const range2 = sheet.getRange(2,5,rows,1);
+  const sums = [];
+  for(let i=0;i<rows;i++){
+    const row = i + 2;
+    const val = [`=SUM(A${row}:D${row})`];
+    sums.push(val);
+  }
+  range2.setFormulas(sums);
+  Logger.log(sums);
+}
+
+
+
+
+function sheet1() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  //Logger.log(sheet);
+  const allData = sheet.getDataRange();
+  //Logger.log(allData.getValues());
+  const range1 = sheet.getRange(1,1,1,sheet.getLastColumn());
+  //Logger.log(range1.getValues()[0]);
+  const data1 = allData.getValues().slice(1);
+  //Logger.log(data1);
+  data1.forEach(row =>{
+    //Logger.log(row);
+  })
+  //Logger.log(allData.getValues()[0]);
+  const range2 = sheet.getRange(2,5,sheet.getLastRow()-1,1);
+  Logger.log(sheet.getLastRow());
+  Logger.log(sheet.getLastColumn());
+  range2.setBorder(true,true,false,false,false,false,'red',SpreadsheetApp.BorderStyle.SOLID_THICK);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function updater1() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  Logger.log(ss.getUrl());
+  const testName = 'test1';
+  let sheet = ss.getSheetByName(testName);
+  Logger.log(sheet);
+  if (!sheet) {
+    sheet = ss.insertSheet();
+    sheet.setName(testName);
+  }
+  ss.setActiveSheet(sheet);
+  let first = ss.getSheets()[0];
+  if (first.getName() != testName) {
+    ss.moveActiveSheet(0);
+    first = ss.getSheets()[0];
+  }
+  Logger.log(first.getName());
+  const headings1 = ['first', 'second', 'third', 'fourth'];
+  const headings = headings1.map(name => {
+    let newValue = name.toLowerCase();
+    let firstLetter = newValue.charAt(0).toUpperCase();
+    let letters = newValue.slice(1);
+    return firstLetter + letters;
+  });
+  const headerRange = sheet.getRange(1, 1, 1, headings.length);
+  const headingValues = headerRange.getValues()[0];
+  if (!arrStringChecker(headings, headingValues)) {
+    headerRange.setValues([headings]);
+  }
+
+  for (let i = 0; i < 5; i++) {
+    sheet.appendRow([i, rNum(), rNum(), rNum()]);
+    const ran1 = sheet.insertRowsBefore(2, 1).getRange(2, 1, 1, headings.length);
+    const newData = adderValues(headings.length);
+    ran1.setValues([newData]);
+  }
+
+  const tempArr = [];
+  const rows = 3;
+  for (let i = 0; i < rows; i++) {
+    tempArr.push(adderValues(headings.length));
+  }
+  Logger.log(tempArr);
+  sheet.insertRowsBefore(2, rows).getRange(2, 1, rows, headings.length).setValues(tempArr);
+
+
+  if (arrStringChecker(headings, headingValues)) {
+    Logger.log('match');
+    //Logger.log(headings);
+    //Logger.log(headingValues);
+  } else {
+    Logger.log('NO match');
+    //Logger.log(headings);
+    //Logger.log(headingValues);
+    headerRange.setValues([headings]);
+  }
+
+
+}
+
+
+function adderValues(num) {
+  const temp = [];
+  for (let i = 0; i < num; i++) {
+    temp.push(rNum());
+  }
+  return temp;
+}
+
+
+
+function rNum() {
+  let min = 1;
+  let max = 1000;
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function arrStringChecker(a1, a2) {
+  return JSON.stringify(a1) === JSON.stringify(a2);
+}
+
+
+
+
+
+
+function maker() {
+  const ss = SpreadsheetApp.create('test2');
+  Logger.log(ss.getId());
+}
+
+function updater5() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  const rules = sheet.getConditionalFormatRules();
+  const range1 = sheet.getRange('A2:D9');
+  const con1 = SpreadsheetApp.newConditionalFormatRule()
+    .whenNumberBetween(0, 500)
+    .setBackground('#0000FF')
+    .setRanges([range1])
+    .build();
+  rules[0] = con1;
+  sheet.setConditionalFormatRules(rules);
+}
+
+function updater4() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  sheet.clearConditionalFormatRules();
+  const rules = sheet.getConditionalFormatRules();
+  Logger.log(rules);
+  const range1 = sheet.getRange('A2:C9');
+  const con1 = SpreadsheetApp.newConditionalFormatRule()
+    .whenNumberBetween(0, 500)
+    .setBackground('#00FF00')
+    .setRanges([range1])
+    .build();
+  rules.push(con1);
+  //sheet.setConditionalFormatRules(rules);
+}
+
+function updater3() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  const rules = sheet.getConditionalFormatRules();
+  rules.forEach(rule => {
+    Logger.log(rule.getRanges());
+    /*
+    const ranges = rule.getRanges();
+    for (let i = 0; i < ranges.length; i++) {
+      Logger.log(ranges[i].getA1Notation());
+      ranges[i].setFontColor('#00ff00');
+    }
+    */
+    const boo = rule.getBooleanCondition();
+    Logger.log(rule.getBooleanCondition().getBackground());
+    Logger.log(rule.getGradientCondition());
+  })
+  Logger.log(rules);
+}
+
+
+
+
+function updater2() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  Logger.log(sheet.getName());
+  const range1 = sheet.getRange('A2:C9');
+  Logger.log(range1.getValues());
+  const con1 = SpreadsheetApp.newConditionalFormatRule()
+    .whenNumberBetween(0, 500)
+    .setBackground('#dddddd')
+    .setRanges([range1])
+    .build();
+  const rules = sheet.getConditionalFormatRules();
+  Logger.log(rules);
+  rules.push(con1);
+  sheet.setConditionalFormatRules(rules);
+
+}
+
+
