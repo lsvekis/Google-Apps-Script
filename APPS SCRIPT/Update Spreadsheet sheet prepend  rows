@@ -1,0 +1,92 @@
+function updater1(){
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  Logger.log(ss.getUrl());
+  const testName = 'test1';
+  let sheet = ss.getSheetByName(testName);
+  Logger.log(sheet);
+  if(!sheet){
+    sheet = ss.insertSheet();
+    sheet.setName(testName);
+  }
+  ss.setActiveSheet(sheet);
+  let first = ss.getSheets()[0];
+  if(first.getName() != testName){
+    ss.moveActiveSheet(0);
+    first = ss.getSheets()[0];
+  }
+  Logger.log(first.getName());
+  const headings1 = ['first','second','third','fourth'];
+  const headings = headings1.map(name => {
+    let newValue = name.toLowerCase();
+    let firstLetter = newValue.charAt(0).toUpperCase();
+    let letters = newValue.slice(1);
+    return firstLetter + letters;
+    });
+  const headerRange = sheet.getRange(1,1,1,headings.length);
+  const headingValues = headerRange.getValues()[0];
+  if(!arrStringChecker(headings,headingValues)){
+    headerRange.setValues([headings]);
+  }
+
+  for(let i=0;i<5;i++){
+    //sheet.appendRow([i,rNum(),rNum(),rNum()]);
+    const ran1 = sheet.insertRowsBefore(2,1).getRange(2,1,1,headings.length);
+    const newData = adderValues(headings.length);
+    ran1.setValues([newData]);
+  }
+
+  const tempArr = [];
+  const rows = 3;
+  for(let i=0;i<rows;i++){
+    tempArr.push(adderValues(headings.length));
+  }
+  Logger.log(tempArr);
+  sheet.insertRowsBefore(2,rows).getRange(2,1,rows,headings.length).setValues(tempArr);
+
+/*
+  if(arrStringChecker(headings,headingValues)){
+    Logger.log('match');
+    //Logger.log(headings);
+    //Logger.log(headingValues);
+  }else{
+    Logger.log('NO match');
+    //Logger.log(headings);
+    //Logger.log(headingValues);
+    headerRange.setValues([headings]);
+  }
+*/
+
+}
+
+
+function adderValues(num){
+  const temp = [];
+  for(let i=0;i<num;i++){
+    temp.push(rNum());
+  }
+  return temp;
+}
+
+
+
+function rNum(){
+  let min = 1;
+  let max = 1000;
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function arrStringChecker(a1,a2){
+  return JSON.stringify(a1) === JSON.stringify(a2);
+}
+
+
+
+
+
+
+function maker() {
+  const ss = SpreadsheetApp.create('test2');
+  Logger.log(ss.getId());
+}
