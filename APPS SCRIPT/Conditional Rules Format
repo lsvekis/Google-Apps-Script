@@ -1,0 +1,74 @@
+function updater5() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  const rules = sheet.getConditionalFormatRules();
+  const range1 = sheet.getRange('A2:D9');
+  const con1 = SpreadsheetApp.newConditionalFormatRule()
+    .whenNumberBetween(0, 500)
+    .setBackground('#0000FF')
+    .setRanges([range1])
+    .build();
+  rules[0] = con1;
+  sheet.setConditionalFormatRules(rules);
+}
+
+function updater4() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  sheet.clearConditionalFormatRules();
+  const rules = sheet.getConditionalFormatRules();
+  Logger.log(rules);
+  const range1 = sheet.getRange('A2:C9');
+  const con1 = SpreadsheetApp.newConditionalFormatRule()
+    .whenNumberBetween(0, 500)
+    .setBackground('#00FF00')
+    .setRanges([range1])
+    .build();
+  rules.push(con1);
+  sheet.setConditionalFormatRules(rules);
+}
+
+function updater3() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  const rules = sheet.getConditionalFormatRules();
+  rules.forEach(rule => {
+    Logger.log(rule.getRanges());
+    /*
+    const ranges = rule.getRanges();
+    for (let i = 0; i < ranges.length; i++) {
+      Logger.log(ranges[i].getA1Notation());
+      ranges[i].setFontColor('#00ff00');
+    }
+    */
+    const boo = rule.getBooleanCondition();
+    Logger.log(rule.getBooleanCondition().getBackground());
+    Logger.log(rule.getGradientCondition());
+  })
+  Logger.log(rules);
+}
+
+
+
+
+function updater2() {
+  const id = '12ShJG5pi-CFGLB6Aw8PXzemqIFKuAcQmHwTg5dREt8s';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheetByName('test1');
+  Logger.log(sheet.getName());
+  const range1 = sheet.getRange('A2:C9');
+  Logger.log(range1.getValues());
+  const con1 = SpreadsheetApp.newConditionalFormatRule()
+    .whenNumberBetween(0, 500)
+    .setBackground('#dddddd')
+    .setRanges([range1])
+    .build();
+  const rules = sheet.getConditionalFormatRules();
+  Logger.log(rules);
+  rules.push(con1);
+  sheet.setConditionalFormatRules(rules);
+
+}
