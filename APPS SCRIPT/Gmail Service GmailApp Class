@@ -1,0 +1,95 @@
+function emails6() {
+  const id = '17e59d8de80a7e6c';
+  const thread = GmailApp.getThreadById(id);
+  //Logger.log(thread);
+  const messages = thread.getMessages();
+  const folder = DriveApp.createFolder('Attachments');
+  messages.forEach(message => {
+    const att = message.getAttachments();
+    //Logger.log(att);
+    att.forEach(attached => {
+      Logger.log(attached);
+      const blob = attached.copyBlob();
+      const file = folder.createFile(blob);
+    })
+  })
+}
+
+function emails5() {
+  const lName = 'Aa New Label';
+  const label = GmailApp.getUserLabelByName(lName);
+  const threads = label.getThreads();
+  threads.forEach(thread => {
+    Logger.log(thread.getId());
+  })
+}
+
+function labelAdd() {
+  const label = GmailApp.createLabel('Aa New Label');
+  Logger.log(label);
+}
+
+function emails4() {
+  const id = '17e59d8de80a7e6c';
+  const message = GmailApp.getMessageById(id);
+  const thread = message.getThread();
+  const lName = 'Aa New Label';
+  const label = GmailApp.getUserLabelByName(lName);
+  const labels = GmailApp.getUserLabels();
+  //Logger.log(labels);
+  labels.forEach(lab => {
+    //Logger.log(lab.getName());
+  })
+  Logger.log(label);
+  label.addToThread(thread);
+  //Logger.log(thread.isInTrash());
+  thread.moveToInbox();
+  //thread.
+
+}
+
+function emails3() {
+  const id = '17e59d8de80a7e6c';
+  const message = GmailApp.getMessageById(id);
+  const thread = message.getThread();
+  Logger.log(thread.getMessageCount());
+  thread.getMessages().forEach(mes => {
+    Logger.log(mes.getSubject());
+    //mes.moveToTrash();
+    Logger.log(mes.isInTrash());
+  })
+
+}
+
+
+
+
+
+function emails2() {
+  const id = '17e59d8de80a7e6c';
+  const message = GmailApp.getMessageById(id);
+  Logger.log(message);
+  message.forward('gappscourses+25@gmail.com');
+  let html = `<div>Subject : ${message.getSubject()}</div>`;
+  html += `<div>Plain Body : ${message.getPlainBody()}</div>`;
+  //html += `<div>Form: ${message.getFrom()}</div>`;  
+  html += `<div>ID: ${message.getId()}</div>`;
+  //html += `<div>Raw : ${message.getRawContent()}</div>`;  
+  html += `<div>HTML Body : ${message.getBody()}</div>`;
+  Logger.log(html);
+  message.reply(html);
+}
+
+function emails1() {
+  const threads = GmailApp.getInboxThreads();
+  Logger.log(GmailApp.getInboxUnreadCount());
+  Logger.log(threads);
+  threads.forEach((thread) => {
+    Logger.log(thread.getMessageCount());
+    const messages = thread.getMessages();
+    messages.forEach(message => {
+      Logger.log(message.getSubject());
+      Logger.log(message.getId());
+    })
+  })
+}
