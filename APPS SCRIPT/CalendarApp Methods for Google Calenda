@@ -1,0 +1,134 @@
+function cal5(){
+  const id = '7lcmefedab3a82sd9n59k0odi8@google.com';
+  const cal = CalendarApp.getDefaultCalendar();
+  const day = new Date('2/18/2022');
+  const events = cal.getEventsForDay(day);
+  Logger.log(events);
+  events.forEach(event=>{
+    Logger.log(event.getId());
+    Logger.log(event.getTitle());
+    const ev = cal.getEventById(event.getId());
+    Logger.log(ev.getColor());
+    ev.setTag('test','New');
+  })
+  const event = cal.getEventById(id);
+  event.setDescription('New updated');
+  event.setTitle('Another Title');
+  event.setColor("8");
+  event.addGuest('gappscourses+5@gmail.com');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function acal5(){
+  const id = 'o50rtf0dei8o3lbshg6rfthrtk@google.com';
+  const cal = CalendarApp.getDefaultCalendar();
+  const day = new Date('2/18/2022');
+  const events = cal.getEventsForDay(day);
+  Logger.log(events);
+  events.forEach(event=>{
+    Logger.log(event.getId());
+    const ev = cal.getEventById(event.getId());
+    Logger.log(ev);
+  })
+
+  const event = cal.getEventById(id);
+  Logger.log(event);
+  event.setDescription('New updated');
+  event.setColor("10");
+  event.addGuest('gappscourses+5@gmail.com');
+
+}
+
+
+
+
+
+function cal4(){
+  const cal = CalendarApp.getDefaultCalendar();
+  const start = new Date('2/18/2022 20:00:00 UTC');
+  const end = new Date('2/18/2022 22:00:00 UTC');
+  const opts = {
+    description : 'This is my event',
+    location : 'Toronto',
+    guests :'gappscourses+10@gmail.com,gappscourses+8@gmail.com',
+    sendInvites : true
+  };
+  const event = cal.createEvent('New Event 2',start,end,opts);
+  Logger.log(event.getId());
+}
+
+
+
+
+
+
+function cal3(){
+  const cal = CalendarApp.getDefaultCalendar();
+  const day = new Date('2/17/2022'); 
+  const events = cal.getEventsForDay(day);
+  Logger.log(events);
+  const event = events[0];
+  const list = event.getGuestList();
+    list.forEach(guest =>{
+      Logger.log(guest.getEmail());
+      Logger.log(guest.getStatus());
+      const subject = event.getTitle();
+      let body = `You have been invited Check you calendar for ${day} ${event.getDescription()}`;
+      if(guest.getStatus() === 'invited'){
+        MailApp.sendEmail(guest.getEmail(),subject,body);
+      }
+  })
+  //events[0].addGuest('gappscourses+12@gmail.com');
+}
+
+
+
+
+function cal2(){
+  const cal = CalendarApp.getDefaultCalendar();
+  //Logger.log(cal.getName());
+  const start = new Date('1/1/2022');
+  const end = new Date('1/1/2023');
+  //Logger.log(start);
+  //Logger.log(end);
+  const opt = {
+    max : 10,
+    search : 'Test'
+  };
+  const events = cal.getEvents(start,end,opt);
+  //Logger.log(events);
+  events.forEach(event =>{
+    Logger.log(event.getTitle());
+    Logger.log(event.isOwnedByMe());
+    //event.addGuest('gappscourses+10@gmail.com');
+    const list = event.getGuestList();
+    list.forEach(guest =>{
+      Logger.log(guest.getEmail());
+      Logger.log(guest.getStatus());
+    })
+    Logger.log(list);
+  })
+
+}
+
+
+
+
+
+function cal1() {
+  const cals = CalendarApp.getAllCalendars();
+  Logger.log(cals);
+  cals.forEach(cal =>{
+    Logger.log(cal.getName());
+  })
+}
