@@ -1,0 +1,111 @@
+function maker3() {
+  const id = '1U85PLCGjVZCOUlGW9xX1h9HBcdH6QqTb';
+  const main = DriveApp.getFolderById(id);
+  const ss = SpreadsheetApp.create('New Sheet');
+  const fid = ss.getId();
+  const file = DriveApp.getFileById(fid);
+  Logger.log(file);
+  file.moveTo(main);
+}
+
+function maker2() {
+  const id = '1U85PLCGjVZCOUlGW9xX1h9HBcdH6QqTb';
+  const main = DriveApp.getFolderById(id);
+  const doc = DocumentApp.create('Test');
+  const fid = doc.getId();
+  const file = DriveApp.getFileById(fid);
+  Logger.log(file);
+  file.moveTo(main);
+}
+
+function maker1() {
+  const fid = '1efWWo8JAph3hZIc3vZoYAToQ2vrWAdb1';
+  const file = DriveApp.getFileById(fid);
+  const blob = file.getBlob();
+  const email = Session.getActiveUser().getEmail();
+  let html = `<h1>New File as PDF</h1>`;
+  html += `<div>Your file is at ${file.getUrl()}</div>`;
+  MailApp.sendEmail({
+    to: email,
+    subject: file.getName(),
+    htmlBody: html,
+    attachments: [blob.getAs(MimeType.PDF)]
+  });
+}
+
+function sel5() {
+  const fid = '1efWWo8JAph3hZIc3vZoYAToQ2vrWAdb1';
+  const id = '1U85PLCGjVZCOUlGW9xX1h9HBcdH6QqTb';
+  const files = DriveApp.getFilesByName('New 8.html');
+  const file = DriveApp.getFileById(fid);
+  while (files.hasNext()) {
+    const file = files.next();
+    Logger.log(file.getId());
+  }
+  Logger.log(files);
+  Logger.log(file);
+  const editors = file.getEditors();
+  Logger.log(editors);
+
+}
+
+function sel4() {
+  const id = '1U85PLCGjVZCOUlGW9xX1h9HBcdH6QqTb';
+  const main = DriveApp.getFolderById(id);
+  const files = main.getFiles();
+  while (files.hasNext()) {
+    const file = files.next();
+    Logger.log(file.getId());
+  }
+}
+
+function sel3() {
+  const id = '1U85PLCGjVZCOUlGW9xX1h9HBcdH6QqTb';
+  const main = DriveApp.getFolderById(id);
+  const files = main.getFiles();
+  let counter = 1;
+  while (files.hasNext()) {
+    const file = files.next();
+    file.addViewer('gappscourses+5@gmail.com');
+    file.setName(`New ${counter}.html`);
+    Logger.log(file.getMimeType());
+    const html = `<h1>Laurence Svekis</h1><div>${counter}</div>`;
+    file.setContent(html);
+    counter++;
+  }
+}
+
+function sel2() {
+  const id = '1XI1d1VGFGICMJMTXAzyAbqpVfO2fLK5K';
+  const main = DriveApp.getFolderById(id);
+  const moveFolder = main.createFolder('Files');
+  const files = main.getFiles();
+  let counter = 1;
+  while (files.hasNext()) {
+    const file = files.next();
+    const fileName = file.getName();
+    const newNamer = `${counter}-${fileName}`;
+    Logger.log(newNamer);
+    file.makeCopy(newNamer, moveFolder);
+    file.moveTo(moveFolder);
+    counter++;
+  }
+}
+
+function sel1() {
+  const id = '1XI1d1VGFGICMJMTXAzyAbqpVfO2fLK5K';
+  const main = DriveApp.getFolderById(id);
+  //const files = main.getFilesByName('File');
+  const files = main.getFiles();
+  Logger.log(files);
+  while (files.hasNext()) {
+    const file = files.next();
+    const fileName = file.getName();
+    if (fileName.includes('File')) {
+      file.setStarred(true);
+    } else {
+      file.setTrashed(true);
+    }
+    Logger.log(file);
+  }
+}
