@@ -1,0 +1,81 @@
+function maker4() {
+  const id = '1XI1d1VGFGICMJMTXAzyAbqpVfO2fLK5K';
+  const main = DriveApp.getFolderById(id);
+  for (let i = 0; i < 5; i++) {
+    const temp = `File ${i + 1}.txt`;
+    const content = `Laurence Svekis ${i + 1}`;
+    const file = main.createFile(temp, content, MimeType.PLAIN_TEXT);
+    Logger.log(file.getOwner().getEmail());
+    file.addEditor('gappscourses+5@gmail.com');
+    Logger.log(file.getEditors());
+  }
+}
+
+function sel2() {
+  const id = '1XI1d1VGFGICMJMTXAzyAbqpVfO2fLK5K';
+  const main = DriveApp.getFolderById(id);
+  const files = main.getFiles();
+  while (files.hasNext()) {
+    const file = files.next();
+    //Logger.log(file.getName());
+    //Logger.log(file.getMimeType());
+    Logger.log(file.isTrashed());
+    Logger.log(file.isStarred());
+    Logger.log('text/plain' == MimeType.PLAIN_TEXT)
+    if (file.getMimeType() != MimeType.PLAIN_TEXT) {
+      file.setTrashed(true);
+    } else {
+      file.setTrashed(true);
+      file.setStarred(false);
+    }
+  }
+}
+
+function maker3() {
+  const id = '1XI1d1VGFGICMJMTXAzyAbqpVfO2fLK5K';
+  const main = DriveApp.getFolderById(id);
+  for (let i = 0; i < 5; i++) {
+    const temp = `File ${i + 1}`;
+    const content = `Laurence Svekis ${i + 1}`;
+    const file = main.createFile(temp, content);
+    Logger.log(file.getOwner().getEmail());
+    file.addEditor('gappscourses+5@gmail.com');
+    Logger.log(file.getEditors());
+  }
+}
+
+function sel1() {
+  const id = '1XI1d1VGFGICMJMTXAzyAbqpVfO2fLK5K';
+  const main = DriveApp.getFolderById(id);
+  main.addEditor('gappscourses+9@gmail.com');
+  const editors = main.getEditors();
+  Logger.log(editors);
+  editors.forEach(editor => {
+    Logger.log(editor.getEmail());
+  })
+  const folders = main.getFolders();
+  //Logger.log(folders);
+  //Logger.log(folders.hasNext())
+  while (folders.hasNext()) {
+    const folder = folders.next();
+    Logger.log(folder.getName());
+  }
+
+}
+
+function maker2() {
+  const id = '1XI1d1VGFGICMJMTXAzyAbqpVfO2fLK5K';
+  const main = DriveApp.getFolderById(id);
+  for (let i = 0; i < 5; i++) {
+    const temp = `Folder ${i + 1}`;
+    const folder = main.createFolder(temp);
+    Logger.log(folder.getOwner().getEmail());
+    folder.addEditor('gappscourses+5@gmail.com');
+    Logger.log(folder.getEditors());
+  }
+}
+
+function maker1() {
+  const folder = DriveApp.createFolder('New Folder');
+  Logger.log(folder.getId());
+}
