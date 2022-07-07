@@ -1,0 +1,48 @@
+const SHEETID = '1wZLJE*****fm4';
+const DOCID = '1RwP*****5U';
+const FOLDERID = '1*****or1fHaV4';
+
+function onOpen(){
+  SpreadsheetApp.getUi()
+  .createMenu('Email Out')
+  .addItem('Send Emails','sender')
+  .addToUi();
+}
+
+function sender() {
+  const sheet = SpreadsheetApp.openById(SHEETID).getSheetByName('data');
+  const data = sheet.getDataRange().getValues();
+
+  const temp = DriveApp.getFileById(DOCID);
+  const folder = DriveApp.getFolderById(FOLDERID);
+
+  const rows = data.slice(1);
+  rows.forEach((row,index)=>{
+    if(row[4] == ''){
+      const file = temp.makeCopy(folder);
+      const doc = DocumentApp.openById(file.getId());
+      const body = doc.getBody();
+      data[0].forEach((heading,i)=>{
+        const header1 = heading.toUpperCase();
+        body.replaceText(`{${header1}}`,row[i]);
+      })
+      doc.setName(row[0]+row[1]);
+      const blob = doc.getAs(MimeType.PDF);
+      doc.saveAndClose();
+      const pdf = folder.createFile(blob).setName(row[0]+row[1]+'.pdf');
+      const email = row[3];
+      const subject = row[0]+row[1]+'new file created';
+      const messageBody = `Hi, ${row[0]} Welcome we've created a PDF for you!`;
+      MailApp.sendEmail({
+        to:email,
+        subject:subject,
+        htmlBody: messageBody,
+        attachments: [blob.getAs(MimeType.PDF)]
+      });
+      const tempo = sheet.getRange(index+2,5,1,1);
+      tempo.setValue(new Date());
+      file.setTrashed(true);
+    }
+  })
+
+}
