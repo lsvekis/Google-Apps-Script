@@ -1,0 +1,77 @@
+function maker1() {
+  const docName = 'Laurence Svekis';
+  const doc = DocumentApp.create(docName);
+  Logger.log(doc.getId());
+  Logger.log(doc.getUrl());
+}
+
+
+function update4(){
+  const id = '17DBrxrjkSCy6etqx1ynH2jmF0JTG1LFBf5Hejhq_32w';
+  const body = DocumentApp.openById(id).getBody();
+  const eles = body.getParagraphs();
+  eles.forEach((ele,ind)=>{
+    const val = ele.appendText(`Element #${ind+1}`);
+    Logger.log(ele);
+  })
+  Logger.log(eles);
+}
+
+function update3(){
+  const id = '17DBrxrjkSCy6etqx1ynH2jmF0JTG1LFBf5Hejhq_32w';
+  const body = DocumentApp.openById(id).getBody();
+  const ele = body.appendParagraph('HelloWorld');
+  const style = {
+    BACKGROUND_COLOR: '#ff0000',
+    FOREGROUND_COLOR: '#ffffff',
+    BOLD: true
+  };
+  ele.setAttributes(style);
+}
+
+
+function update2(){
+  const id = '17DBrxrjkSCy6etqx1ynH2jmF0JTG1LFBf5Hejhq_32w';
+  const doc = DocumentApp.openById(id);
+  const body = doc.getBody();
+  const ele = body.appendParagraph('HelloWorld');
+  Logger.log(ele.getAttributes());
+}
+
+
+function updater1(){
+  const id = '17DBrxrjkSCy6etqx1ynH2jmF0JTG1LFBf5Hejhq_32w';
+  const doc = DocumentApp.openById(id);
+  const body = doc.getBody();
+  body.appendHorizontalRule();
+  const val = body.getNumChildren();
+  let temp = `Laurence Svekis ${val}`;
+  body.appendParagraph(temp);
+  const img = UrlFetchApp.fetch('http://www.discoveryvip.com/img/d.png');
+  body.appendImage(img.getBlob());
+}
+
+function maker3(){
+  const docName = 'Test 1';
+  const doc = DocumentApp.create(docName);
+  const id = doc.getId();
+  const body = doc.getBody();
+  let temp = `ID ${id}`;
+  body.appendParagraph(temp);
+}
+
+
+function maker2(){
+  const docName = 'Laurence Svekis';
+  const ss = SpreadsheetApp.create(docName);
+  const sheet = ss.getSheets()[0];
+  sheet.appendRow(['Name','Doc ID','Doc URL']);
+  for(let i=0;i<3;i++){
+    const docName = `Laurence Svekis ${i+1}`;
+    const doc = DocumentApp.create(docName);
+    sheet.appendRow([docName,doc.getId(),doc.getUrl()]);
+  }
+}
+
+
+
