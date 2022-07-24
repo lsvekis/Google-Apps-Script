@@ -1,0 +1,128 @@
+function sender1(){
+  const destID = '1HYWG2U5chl_lXoV5tqR-B5Vq6JAkxnba';
+  const tempID = '1zLgTEc5-OUrOTsQollYDv_d_fdKVK74fyyr5Q63wMA0';
+  const sheetID = '1G7yTIKlDP90aXC12tCXOZ_5QLgxE_QI0hwpDQCDDWgM'
+
+  const destFolder = DriveApp.getFolderById(destID);
+  const tempDoc = DriveApp.getFileById(tempID );
+  const ss = SpreadsheetApp.openById(sheetID);
+  const sheet = ss.getSheets()[0];
+  const data = sheet.getDataRange().getValues();
+  const rows = data.slice(1);
+  rows.forEach((row,index)=>{
+    if(!row[4]){
+      Logger.log(row[0]);
+      const newDoc = tempDoc.makeCopy(row[0],destFolder);
+      const doc = DocumentApp.openById(newDoc.getId());
+      const body = doc.getBody();
+      data[0].forEach((heading,col)=>{
+        const tempHeading = heading.toUpperCase();
+        body.replaceText(`{${tempHeading}}`,row[col]);
+      })
+      doc.saveAndClose();
+      const blob = doc.getAs(MimeType.PDF);
+      destFolder.createFile(blob).setName(row[0]+'.pdf');
+      const email = row[3];
+      const subject = row[0]+row[1]+' Your doc';
+      const hbody = `Hi ${row[0]} Welcome your id ${row[2]}`;
+      
+      MailApp.sendEmail({
+        to:email,subject:subject,htmlBody:hbody,attachments:[blob.getAs(MimeType.PDF)]
+      });
+      newDoc.setTrashed(true);
+      const temp = sheet.getRange(index+2,5,1,1);
+      temp.setValue(true);
+
+    };
+  })
+
+}
+
+
+
+function makerPDFs1(){
+  const fid = '1f6jFkkEhxhvUtP7gY-3-vMrfANle6DJG';
+  const did = '1HYWG2U5chl_lXoV5tqR-B5Vq6JAkxnba';
+  const sourceF = DriveApp.getFolderById(fid);
+  const sourceD = DriveApp.getFolderById(did);
+  const files = sourceF.getFiles();
+  while(files.hasNext()){
+    const file = files.next();
+    //const blob = file.makeCopy(sourceD).getAs(MimeType.PDF);
+    const blob = file.getBlob();
+    const pdf = sourceD.createFile(blob).setName(file.getName()+'.pdf');
+  }
+}
+
+function makerPDF1(){
+  const folderID ='1f6jFkkEhxhvUtP7gY-3-vMrfANle6DJG';
+  const desFolder = DriveApp.getFolderById(folderID);
+  const tempID = '1zLgTEc5-OUrOTsQollYDv_d_fdKVK74fyyr5Q63wMA0';
+  const tempDoc = DriveApp.getFileById(tempID );
+  const newDoc = tempDoc.makeCopy('test1',desFolder); 
+  const blob = newDoc.getAs(MimeType.PDF);
+  const pdf = desFolder.createFile(blob).setName('test1.pdf');
+}
+
+
+function updateDoc3() {
+  const tempID = '1zLgTEc5-OUrOTsQollYDv_d_fdKVK74fyyr5Q63wMA0';
+  const sheetID = '1G7yTIKlDP90aXC12tCXOZ_5QLgxE_QI0hwpDQCDDWgM'
+  const tempDoc = DriveApp.getFileById(tempID );
+  const ss = SpreadsheetApp.openById(sheetID);
+  const sheet = ss.getSheets()[0];
+  const data = sheet.getDataRange().getValues();
+  const rows = data.slice(1);
+  rows.forEach((row,index)=>{
+    const newDoc = tempDoc.makeCopy(row[0]);
+    const body = DocumentApp.openById(newDoc.getId()).getBody();
+    data[0].forEach((heading,col)=>{
+      const tempHeading = heading.toUpperCase();
+      body.replaceText(`{${tempHeading}}`,row[col]);
+    })
+    const temp = sheet.getRange(index+2,5,1,1);
+    temp.setValue(true);
+  })
+}
+
+
+
+function testData1(){
+  const sheetID = '1G7yTIKlDP90aXC12tCXOZ_5QLgxE_QI0hwpDQCDDWgM'
+  const ss = SpreadsheetApp.openById(sheetID);
+  const sheet = ss.getSheets()[0];
+  const data = sheet.getDataRange().getValues();
+  const rows = data.slice(1);
+  rows.forEach((row,index)=>{
+    Logger.log(row);
+    const temp = sheet.getRange(index+2,5,1,1);
+    temp.setValue(false);
+  })
+  //Logger.log(rows);
+}
+
+
+function updateDoc2() {
+  const tempID = '1zLgTEc5-OUrOTsQollYDv_d_fdKVK74fyyr5Q63wMA0';
+  const tempDoc = DriveApp.getFileById(tempID );
+  const newDoc = tempDoc.makeCopy('new 2');
+  const doc = DocumentApp.openById(newDoc.getId());
+  const body = doc.getBody();
+  const user = {first:'Laurence',last:'Svekis',id:15}
+  body.replaceText('{FIRST}',user.first);
+  body.replaceText('{LAST}',user.last);
+  body.replaceText('{ID}',user.id);
+}
+
+
+
+function updateDoc1() {
+  const id = '1wHdzWZnt_W4y-93k-_T_ZLrDzqc06QIYx45-CW7iL8c';
+  const doc = DocumentApp.openById(id);
+  const body = doc.getBody();
+  Logger.log(body);
+  const user = {first:'Laurence',last:'Svekis',id:15}
+  body.replaceText('{FIRST}',user.first);
+  body.replaceText('{LAST}',user.last);
+  body.replaceText('{ID}',user.id);
+}
