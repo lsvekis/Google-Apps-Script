@@ -1,0 +1,83 @@
+const ID = '1Cwi4G0sivPHF5rMiw3dRRBTTnr6vQWNSlFB6ls6r4Os';
+const MYOBJ = [
+   {first:'Laurence',last:'Svekis'},
+   {first:'Test',last:'Svekis'},
+   {first:'Jane',last:'Doe'}
+];
+ 
+function doGet(e) {
+ const data = output(e);
+ return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+}
+ 
+function doPost(e) {
+ const data = output(e);
+ return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+}
+ 
+function output(e){
+   const data = {};
+ if('type' in e.parameter){
+   let valID = e.parameter['type'];
+   if(valID === '1'){
+     data.vals = SpreadsheetApp.openById(ID).getSheets()[0].getDataRange().getValues();
+   }else if(valID === '2'){
+     data.vals = MYOBJ;
+   }else if(valID === '3'){
+     data.vals = e;
+   }else {
+     data.vals = {status:'Nothing found'};
+   }
+ }
+ return data.vals;
+}
+<!DOCTYPE html>
+<html>
+<head>
+ <title>JavaScript </title>
+</head>
+<body>
+ <input type="number" min="1" max="5" value="1">
+ <button class="btn1">send GET</button>
+ <button class="btn2">send POST</button>
+ <div class="results"></div>
+ <script src="app.js"></script>
+</body>
+</html>
+ 
+const url = 'https://script.google.com/macros/s/AKfycbwtwnU8_hLkHg4_XpRhtjrJM02qfDYNXTWcWFWFSFVYObQXGeQ_kucfU4aPByJfVvQ-FQ/exec';
+const myInput = document.querySelector('input');
+const btn1 = document.querySelector('.btn1');
+const btn2 = document.querySelector('.btn2');
+const results = document.querySelector('.results');
+ 
+btn1.addEventListener('click',(e)=>{
+   const val = myInput.value;
+   const url1 = `${url}?type=${val}`;
+   fetch(url1)
+   .then(res => res.json())
+   .then(data => {
+       outputer(data,'GET');
+   })
+})
+ 
+btn2.addEventListener('click',(e)=>{
+   const url1 = `${url}?type=${myInput.value}`;
+   const formData = new FormData();
+   formData.append('key1','Value1');
+   fetch(url1,{
+       method : 'POST',
+       body : formData
+   })
+   .then(res => res.json())
+   .then(data => {
+       outputer(data,'POST');
+   })
+})
+ 
+function outputer(vals,val){
+   console.log(vals);
+   results.textContent = JSON.stringify(vals);
+   results.textContent += JSON.stringify(' Sent Method '+val);
+}
+ 
