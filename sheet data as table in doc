@@ -1,0 +1,23 @@
+const SHEETID = '1u7vPqjklpmrqcFvq-n8ygU';
+const DOCID = '1yoV_oFO-wY1-cB63hhIrY';
+
+function getValues1() {
+  const ss = SpreadsheetApp.openById(SHEETID);
+  const sheet = ss.getSheets()[0];
+  const range = sheet.getDataRange();
+  const data = range.getValues();
+  return data;
+}
+
+function createTableDoc(){
+  const doc = DocumentApp.create('doc1');
+}
+
+function updateDoc(){
+  const doc =DocumentApp.openById(DOCID);
+  const body = doc.getBody();
+  const cells = getValues1();
+  body.appendTable(getValues1());
+  //DocumentApp.openById(DOCID).getBody().appendTable(getValues1());
+  Logger.log(body);
+}
