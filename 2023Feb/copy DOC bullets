@@ -1,0 +1,13 @@
+function copyBullets() {
+  //const sourceDoc = DocumentApp.getActiveDocument();
+  const sourceDoc = DocumentApp.openById('1SCE46vJBcWzMXCwhTBW_Hs_NC00LBIYWKFjiwZCXXVY');
+  const listItems = sourceDoc.getBody().getListItems();
+  Logger.log(listItems);
+  //const targetDoc = DocumentApp.create('New Doc Bullets');
+  const targetDoc = DocumentApp.openById('1KCKkFzMzSgHOvZJ18z_7W-MVMcTwguT8iHINHXlH-I4');
+  const targetBody = targetDoc.getBody();
+  for(let i=0;i<listItems.length;i++){
+    const listItemText = listItems[i].getText();
+    targetBody.appendListItem(listItemText).setGlyphType(DocumentApp.GlyphType.BULLET);
+  }
+}
