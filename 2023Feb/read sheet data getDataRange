@@ -1,0 +1,9 @@
+function readData(){
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const dataRange = sheet.getDataRange();
+  const data = dataRange.getValues();
+  data.forEach(row=>{
+    Logger.log(row.length);
+  })
+  Logger.log(data);
+}
