@@ -1,0 +1,18 @@
+const ID = '1SCE46vJBcWzMXCwhTBW_HsWKFjiwZCXXVY';
+const FOLDERID = '1sFNkLlWwZ';
+
+function generatePDF(){
+  const url = 'https://basescripts.com/wp-content/uploads/2023/02/JavaScript-interview-questions-with-code-examples.pdf';
+  const fileName = 'Web PDF file';
+  const pdf = UrlFetchApp.fetch(url).getBlob();
+  const folder = DriveApp.getFolderById(FOLDERID);
+  folder.createFile(pdf).setName(fileName);
+}
+
+function genPDF(){
+  const doc = DriveApp.getFileById(ID);
+  const pdf = doc.getAs('application/pdf');
+  pdf.setName('test1');
+  const folder = DriveApp.getFolderById(FOLDERID);
+  folder.createFile(pdf);
+}
