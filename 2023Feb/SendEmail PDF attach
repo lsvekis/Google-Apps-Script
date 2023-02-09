@@ -1,0 +1,21 @@
+function sendMyEmail() {
+  const email = Session.getActiveUser().getEmail();
+  const recEmail = email;
+  const subject = 'Test Emailing';
+  const body = '<h1>Laurence Svekis</h1><p>This is an email sent by script</p>';
+  const id = '1SCE46vJBcWzMXCwhTBW_Hs_NC00LBIYWKFjiwZCXXVY';
+  const file = DriveApp.getFileById(id);
+  const blob = Utilities.newBlob('My Content','text/html','myHTML.html');
+  /*
+  GmailApp.sendEmail(recEmail,subject,body,{
+    from:email
+  });
+  */
+  MailApp.sendEmail({
+    to:recEmail,
+    subject:subject,
+    name:'My Docs',
+    htmlBody:body,
+    attachments:[file.getAs(MimeType.PDF)]
+  });
+}
