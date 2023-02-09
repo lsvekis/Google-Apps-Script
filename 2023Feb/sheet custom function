@@ -1,0 +1,8 @@
+function addDiscount(cost,dis) {
+  let price = cost - (cost * dis);
+  let dlr = Intl.NumberFormat('en-US',{
+    style:'currency',
+    currency:'USD'
+  })
+  return dlr.format(price);
+}
