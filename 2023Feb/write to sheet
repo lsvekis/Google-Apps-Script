@@ -1,0 +1,13 @@
+function writeData(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheets = ss.getSheets();
+  Logger.log(sheets);
+  const sheet = sheets[2];
+  //const sheet = ss.getSheetByName('Sheet2');
+  //const sheet = SpreadsheetApp.getActiveSheet();
+  const data = [['Name','ID'],['Laurence','100'],['Laura','50'],['John','1140']];
+  const lastRow = sheet.getLastRow();
+  Logger.log(lastRow);
+  const range = sheet.getRange(lastRow+1,1,data.length,data[0].length);
+  range.setValues(data);
+}
