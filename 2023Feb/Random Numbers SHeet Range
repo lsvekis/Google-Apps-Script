@@ -1,0 +1,32 @@
+const ID = '132trziyDq_foIdRW0vciq2rm2NT-UKvLa8IvLsk8qIk';
+
+function adder(){
+  const sheet = SpreadsheetApp.openById(ID).getSheetByName('add');
+  const data = sheet.getDataRange().getValues();
+  data.forEach((row,index) =>{
+    let total = 0;
+    row.forEach(cell => {
+      if(cell){
+      total = total + parseInt(cell);
+      }
+    })
+    const rowValue = index+1;
+    const range = sheet.getRange(rowValue,row.length+1,1,1);
+    range.setValue(total);
+  })
+}
+
+
+function makeNums(){
+  const ss = SpreadsheetApp.openById(ID);
+  const sheet = ss.getSheetByName('add');
+  for(let i=0;i<20;i++){
+    const arr = [getRan(),getRan(),getRan()];
+    sheet.appendRow(arr);
+  }
+  Logger.log(sheet);
+}
+
+function getRan(){
+  return Math.floor(Math.random()*100);
+}
