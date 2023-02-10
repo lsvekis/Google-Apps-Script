@@ -1,0 +1,7 @@
+function hello(){
+  const message = 'Laurence Svekis';
+  Logger.log(message);
+  for(let i=0;i<20;i++){
+    Logger.log(i);
+  }
+}
