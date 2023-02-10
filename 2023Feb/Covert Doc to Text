@@ -1,0 +1,8 @@
+function converterText(){
+  const doc = DocumentApp.openById(ID);
+  const body = doc.getBody();  //DocumentBodySection
+  const txt = body.getText();
+  const email = Session.getActiveUser().getEmail();
+  //Logger.log(email);
+  MailApp.sendEmail(email,'My Doc Text',txt);
+}
