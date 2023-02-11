@@ -1,0 +1,29 @@
+function formatSheetData(){
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[1];
+  sheet.getRange(1,4,1,1).setValue('Total');
+  const data = sheet.getDataRange().getValues();
+  const headerRange = sheet.getRange(1,1,1,data[0].length);
+  headerRange.setFontWeight('bold');
+  headerRange.setFontSize(20);
+  const borderRange = sheet.getRange(1,1,data.length,data[0].length);
+  borderRange.setBorder(true,false,false,true,true,true,'black',SpreadsheetApp.BorderStyle.DOTTED);
+  let total = 0;
+  for(let i=1;i<data.length;i++){
+    let sum = parseInt(data[i][1]) * parseInt(data[i][2]);
+    sheet.getRange(i+1,4,1,1).setValue(sum);
+    Logger.log(sum);
+    total += sum;
+  }
+  sheet.getRange(data.length+1,4,1,1).setValue(total);
+  const myChart = sheet.newChart()
+      .setChartType(Charts.ChartType.BAR)
+      .addRange(sheet.getRange('B2:C7'))
+      .setOption('title','My Data')
+      .setOption('width',500)
+      .setOption('height',400)
+      .setPosition(5,6,0,0)
+      .build();
+  sheet.insertChart(myChart)
+
+  Logger.log(total);
+}
