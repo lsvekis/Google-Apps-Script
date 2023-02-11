@@ -1,0 +1,36 @@
+const ID = '132trziyDq_foIdRW0vciq2rm2NT-UKvLa8IvLsk8qIk';
+function makeEvents(){
+  const sheet = SpreadsheetApp.openById(ID).getSheetByName('Cal');
+  const data = sheet.getDataRange().getValues();
+  const events = data.slice(1);
+  const headings = data[0];
+  events.forEach((event,index)=>{
+    const start = event[1];
+    const nameEvent = event[0];
+    const end = event[2];
+    const loc = event[3];
+    const des = event[4];
+    const cal =CalendarApp.getDefaultCalendar();
+    const eve = cal.createEvent(nameEvent,start,end,{
+      location:loc,
+      description:des
+    });
+    Logger.log(cal);
+  })
+}
+
+function updateCal(){
+  const cal =CalendarApp.getDefaultCalendar();
+  const ss = SpreadsheetApp.openById(ID);
+  const start = new Date();
+  const end = new Date(start.getTime() + (100*24*60*60*1000));
+  const events = cal.getEvents(start,end);
+  Logger.log(events);
+  const sheet = ss.insertSheet();
+  sheet.appendRow(['Name','Start','End','Location','ID']);
+  sheet.setName('New Event List');
+  events.forEach(event => {
+    const arr = [event.getTitle(),event.getStartTime(),event.getEndTime(),event.getLocation(),event.getId()];
+    sheet.appendRow(arr);
+  })
+}
