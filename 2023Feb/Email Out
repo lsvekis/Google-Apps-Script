@@ -1,0 +1,11 @@
+function emailOut(){
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const data = sheet.getDataRange().getValues();
+  Logger.log(data);
+  const subject = 'My Update';
+  const message = 'Hello, \n\nMy update info!\n\nRegards,\nLaurence Svekis';
+  for(let i=1;i<data.length;i++){
+    const email = (data[i][2]);
+    MailApp.sendEmail(email,subject,message);
+  }
+}
