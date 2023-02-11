@@ -1,0 +1,12 @@
+function sheetData2(){
+  const sheet = SpreadsheetApp.openById(ID).getSheetByName('data');
+  const data = sheet.getDataRange().getValues();
+  const headings = data[0];
+  const results = data.slice(1);
+  results.forEach((row,index) => {
+    const days = (Math.floor(parseInt(row[1])/8));
+    sheet.getRange(index+2,3).setValue(days);
+  })
+  //Logger.log(results);
+
+}
