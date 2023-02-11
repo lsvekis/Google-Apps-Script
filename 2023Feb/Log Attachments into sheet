@@ -1,0 +1,20 @@
+function getAtt(){
+  const id = '132trziyDq_foIdRW0vciq2rm2NT-UKvLa8IvLsk8qIk';
+  const threads = GmailApp.search('has:attachment');
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.insertSheet();
+  sheet.setName('Attachments');
+  threads.forEach(thread =>{
+    const messages = thread.getMessages();
+    messages.forEach(message => {
+      const attments = message.getAttachments();
+      attments.forEach(attachment =>{
+        Logger.log(attachment.getName());
+        const arr = [attachment.getName(),attachment.getSize(),attachment.getContentType()];
+        sheet.appendRow(arr);
+      })
+    })
+
+  })
+
+}
