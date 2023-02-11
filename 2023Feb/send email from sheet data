@@ -1,0 +1,16 @@
+function senderEmail(){
+  const sheet = SpreadsheetApp
+                .openById(ID)
+                .getSheetByName('Users');
+  const data = sheet.getDataRange().getValues();
+  const users = data.slice(1);
+  Logger.log(users);
+  users.forEach((user,index)=>{
+    const userName = user[0];
+    const email = user[2];
+    const id = user[1];
+    const message = `Hello ${userName}, your id is ${id}`;
+    MailApp.sendEmail(email,'Welcome',message);
+  })
+
+}
