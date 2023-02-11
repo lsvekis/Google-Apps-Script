@@ -1,0 +1,14 @@
+function makeFolderDrive(){
+  const folder = DriveApp.createFolder('attachments');
+  const threads = GmailApp.search('has:attachment');
+  const attachments = [];
+  threads.forEach(thread => {
+    thread.getMessages().forEach(message => {
+      message.getAttachments().forEach(attachment => {
+        const file = folder.createFile(attachment.copyBlob().setName(attachment.getName()));
+        attachments.push(attachment.getName());
+      })
+    })
+  })
+  Logger.log(attachments);
+}
