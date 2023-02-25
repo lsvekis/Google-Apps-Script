@@ -1,0 +1,16 @@
+function createTrig(){
+  const id = '1cY89p-9YdKYjRZx9nmz1QlpPsU6iwwvMVxETSZ65vIk';
+  const form = FormApp.openById(id);
+  ScriptApp.newTrigger('sendNotification')
+  .forForm(form)
+  .onFormSubmit()
+  .create();
+}
+
+function sendNotification(e){
+  //const email = Session.getActiveUser().getEmail();
+  const email = 'gappscourses@gmail.com';
+  const subject = 'New Submission';
+  const body = 'New Data';
+  MailApp.sendEmail(email,subject,body);
+}
