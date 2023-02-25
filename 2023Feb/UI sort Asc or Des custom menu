@@ -1,0 +1,18 @@
+function onOpen(){
+  const menu = SpreadsheetApp.getUi().createMenu('My Menu');
+  menu.addItem('Sort Asc','sortAsc');
+  menu.addItem('Sort Des','sortDes');  
+  menu.addToUi();
+}
+
+function sortAsc(){
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const range = sheet.getDataRange();
+  range.sort({column:1,ascending:true});
+}
+
+function sortDes(){
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const range = sheet.getDataRange();
+  range.sort({column:1,ascending:false}); 
+}
