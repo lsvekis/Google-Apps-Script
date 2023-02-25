@@ -1,0 +1,27 @@
+function senderMail(){
+  const id = '1SCE46vJBcWzMXCwhTBW_Hs_NC00LBIYWKFjiwZCXXVY';
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Users');
+  //const data = sheet.getDataRange().getValues();
+  const rows = sheet.getDataRange().getValues().slice(1);
+  Logger.log(rows);
+  rows.forEach(user =>{
+    const name = user[0];
+    const uid = user[2];
+    const email = user[1];
+    const subject = `Test Email ${name}`;
+    const body = `<h1>Hello ${name}</h1>Your user ID is ${uid}`;
+    const html = `<div>New Div</div><ul><li>1</li><li>2</li></ul> ${body}`;
+    const blob = Utilities.newBlob(html,'text/html',`${name}.html`);
+    const file = DriveApp.getFileById(id);
+    //MailApp.sendEmail(email,subject,body);
+    MailApp.sendEmail({
+      to:email,
+      subject:subject,
+      htmlBody:body,
+      attachments:[file.getAs(MimeType.PDF),blob]
+    });
+    Logger.log(name);
+  })
+
+}
