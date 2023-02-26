@@ -1,0 +1,13 @@
+function cFolder(){
+  const folderName = 'New Folder Today';
+  const folder = DriveApp.createFolder(folderName);
+  Logger.log(`Created Folder ID ${folder.getId()}`);
+}
+
+function addFolder(){
+  const id = '1SjwbFJA51R2w2c6Zp8XMrYFvHXpNQMSE';
+  const folderName = 'Inside Folder';
+  const main = DriveApp.getFolderById(id);
+  const folder = main.createFolder(folderName);
+  Logger.log(`Created Folder ID ${folder.getId()}`);
+}
