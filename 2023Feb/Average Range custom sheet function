@@ -1,0 +1,11 @@
+function AVE_RANGE(range){
+  let sum = 0;
+  let count = 0;
+  for(let row=0;row<range.length;row++){
+    for(let col=0;col<range[row].length;col++){
+      sum += range[row][col];
+      count++;
+    }
+  }
+  return Math.ceil(sum/count);
+}
