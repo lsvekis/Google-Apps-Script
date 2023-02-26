@@ -1,0 +1,24 @@
+function senderEmail(){
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Users');
+  const data = sheet.getDataRange().getValues();
+  const users = data.slice(1);
+  const today = new Date();
+  users.forEach((user,index) => {
+    if(user[4]==''){
+      const date = new Date(user[3]);
+      const diff = Math.round((date-today)/1000*60*60*24);
+      const range = sheet.getRange(index+2,5);
+      if(diff<0){
+        const email = user[1];
+        const subject = 'Passed';
+        const body = 'This is a reminder';
+        MailApp.sendEmail(email,subject,body);
+        range.setValue(today);
+      }
+      Logger.log(diff);
+    }else{
+      Logger.log(user[4]);
+    }
+  })
+  //Logger.log(users);
+}
