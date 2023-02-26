@@ -1,0 +1,18 @@
+function onOpen(){
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('adv')
+    .addItem('Fun1','fun1')
+    .addItem('Fun2','fun2')
+    .addItem('Fun3','fun3')
+    .addToUi()
+}
+
+function fun1(){
+  SpreadsheetApp.getUi().alert('You clicked 1');
+}
+function fun2(){
+  SpreadsheetApp.getUi().alert('You clicked 2');
+}
+function fun3(){
+  SpreadsheetApp.getUi().alert('You clicked 3');
+}
