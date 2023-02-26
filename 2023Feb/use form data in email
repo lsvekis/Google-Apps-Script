@@ -1,0 +1,8 @@
+function onFormSubmit(e){
+  const vals = e.namedValues;
+  const subject = 'New Form Submission';
+  const email = 'gappscourses@gmail.com';
+  const message = JSON.stringify(vals);
+  const body = `Message ${vals.message[0]} Name ${vals.name[0]}  Name ${vals["Email Address"][0]}`;
+  MailApp.sendEmail(email,subject,body);
+}
