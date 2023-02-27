@@ -1,0 +1,7 @@
+function FIB(val){
+  if(val <=1){
+    return val
+  }else{
+    return FIB(val-1)+FIB(val-2);
+  }
+}
