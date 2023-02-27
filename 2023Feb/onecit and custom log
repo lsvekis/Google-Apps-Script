@@ -1,0 +1,16 @@
+function onEdit(e){
+  const range = e.range;
+  const col = range.getColumn();
+  if(col == 1){
+    const row = range.getRow();
+    const dateCell = range.offset(0,1);
+    dateCell.setValue(new Date());
+    logN(col);
+    logN(JSON.stringify(e));
+  }
+}
+
+function logN(val){
+  const ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('log');
+  ss.appendRow([val]);
+}
