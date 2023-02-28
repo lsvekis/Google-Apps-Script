@@ -1,0 +1,12 @@
+function createmyDoc(){
+  const doc = DocumentApp.create('Laurence Svekis');
+  const body = doc.getBody();
+  body.insertParagraph(0,'My new Doc, Laurence Svekis');
+}
+
+function updatemyDoc(){
+  const id = '1JJyHruUbZQv5Tncf9Vaa3-BUP96-14Q5zLHTVebDDbs';
+  const doc = DocumentApp.openById(id);
+  const body = doc.getBody();
+  body.insertParagraph(10,'*****Laurence Svekis');
+}
