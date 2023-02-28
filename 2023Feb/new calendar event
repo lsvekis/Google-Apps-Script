@@ -1,0 +1,7 @@
+function myEventCal(){
+  const cal = CalendarApp.getDefaultCalendar();
+  const title = 'My Birthday';
+  const start = new Date('March 1, 2023 10:00:00');
+  const end = new Date('March 1, 2023 11:00:00');
+  const event = cal.createEvent(title,start,end);
+}
