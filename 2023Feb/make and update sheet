@@ -1,0 +1,15 @@
+function makeSheets(){
+  const ss = SpreadsheetApp.create('Laurence Sheet');
+  const sheet = ss.getSheets()[0];
+  const row = ['Laurence','Svekis','100'];
+  sheet.appendRow(row);
+  Logger.log(ss.getId());
+}
+
+function updateSheet(){
+  const id = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+  const ss = SpreadsheetApp.openById(id);
+  const sheet = ss.getSheets()[0];
+  const row = ['1 Laurence','1 Svekis','55'];
+  sheet.appendRow(row);
+}
