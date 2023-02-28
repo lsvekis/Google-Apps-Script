@@ -1,0 +1,10 @@
+function creatorForm(){
+  const form = FormApp.create('Laurence Svekis');
+  const item = form.addMultipleChoiceItem();
+  item.setTitle('Select One')
+    .setChoices([
+      item.createChoice('One'),
+      item.createChoice('Two'),
+      item.createChoice('Three')
+      ]);
+}
