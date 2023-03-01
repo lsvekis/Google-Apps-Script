@@ -1,0 +1,18 @@
+function makeSlides(){
+  const title = 'Laurence Svekis';
+  const slides = SlidesApp.create(title);
+  const slide = slides.getSlides()[0];
+  slide.insertTextBox(title);
+  const slide2 = slide.duplicate();
+}
+
+function upSlides(){
+  const id = '1AArjO5fgaNtf-iFWmhslNZTSOh1ZnGWmicIPFDsaC4k';
+  const slides = SlidesApp.openById(id);
+  const slide1 = slides.getSlides()[0];
+  const sid = '132trziyDq_foIdRW0vciq2rm2NT-UKvLa8IvLsk8qIk';
+  const sheet = SpreadsheetApp.openById(sid).getSheetByName('data');
+  const chart = sheet.getCharts()[0];
+  Logger.log(chart);
+  slide1.insertSheetsChartAsImage(chart);
+}
