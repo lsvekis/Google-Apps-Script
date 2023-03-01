@@ -1,0 +1,18 @@
+function conSheet(){
+  const id = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+  const ss = SpreadsheetApp.openById(id);
+  const sheets = ss.getSheets();
+  const sheetName = 'quotes';
+  sheets.forEach(sheet =>{
+    if(sheet.getName()!=sheetName){
+      sheet.hideSheet();
+    }
+  })
+  const blob = ss.getBlob().getAs('application/pdf').setName(`${sheetName}.pdf`);
+  DriveApp.createFile(blob);
+  sheets.forEach(sheet =>{
+    if(sheet.getName()!=sheetName){
+      sheet.showSheet();
+    }
+  })
+}
