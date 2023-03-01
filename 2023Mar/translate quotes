@@ -1,0 +1,20 @@
+const ID = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+function textTranslator(){
+  const textEng = 'Hello World';
+  const targetLang = 'es';
+  const newText = LanguageApp.translate(textEng,'en',targetLang);
+  Logger.log(newText);
+}
+
+function sheetQuotes(){
+  const ss = SpreadsheetApp.openById(ID).getSheetByName('quotes');
+  const data = ss.getDataRange().getValues();
+  Logger.log(data);
+  const lang = 'is';
+  data.forEach((quote,index)=>{
+    const newText = LanguageApp.translate(quote,'en',lang);
+    Logger.log(newText);
+    const range = ss.getRange(index+1,2);
+    range.setValue(newText);
+  })
+}
