@@ -1,0 +1,12 @@
+function cpyFolder(){
+  const folderID = '17hhl91aZY1pM0S8dD41Hgz30_8u_O1Uc';
+  const folder = DriveApp.getFolderById(folderID);
+  const newName = 'Laurence';
+  const newFolder = DriveApp.createFolder(newName);
+  const files = folder.getFiles();
+  while(files.hasNext()){
+    const file = files.next();
+    file.makeCopy(file.getName(),newFolder);
+  }
+  Logger.log(folder);
+}
