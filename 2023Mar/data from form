@@ -1,0 +1,17 @@
+function getMyData(){
+  const id = '1Es22J95HkuZPmPmbkJRfMZ4MpnwFRGvddGxR8gcPFJU';
+  const sid = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+  const ss = SpreadsheetApp.openById(sid).getSheetByName('data');
+  const form = FormApp.openById(id);
+  const responses = form.getResponses();
+  responses.forEach(response =>{ 
+    Logger.log(response.getItemResponses());
+    const items = response.getItemResponses();
+    items.forEach(item=>{
+      const question = item.getItem().getTitle();
+      const answer = item.getResponse();
+      ss.appendRow([`Question:${question}`,`Answer:${answer}`]);
+      Logger.log(`Question:${question} Answer:${answer}`);
+    })
+  })
+}
