@@ -1,0 +1,16 @@
+function makeSlides(){
+  const pre = SlidesApp.create('Laurence Test2');
+  const slide = pre.getSlides()[0];
+  slide.insertTextBox('Laurence Svekis',20,20,250,250);
+}
+
+function upSlides(){
+  const id = '1qTkK20Av6Rm5w6fO3ey48';
+  const pre = SlidesApp.openById(id);
+  const slide = pre.getSlides()[0];
+  const eles = slide.getShapes();
+  eles.forEach(ele =>{
+    Logger.log(ele.getText().asString());
+    ele.getText().replaceAllText('Laurence','Mr');
+  })
+}
