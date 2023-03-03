@@ -1,0 +1,12 @@
+function modData(){
+  const id = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('users');
+  const data = sheet.getDataRange().getValues();
+  data.forEach((row,index)=>{
+    if(row[0] == 'Laurence'){
+      const range = sheet.getRange(index+1,1); 
+      range.setBackground('blue');
+      //range.setValue('Active');
+    }
+  })
+}
