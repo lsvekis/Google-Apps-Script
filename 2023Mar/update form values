@@ -1,0 +1,10 @@
+function modForm(){
+  const id = '1Q1Z70eKxs1e5kiR03YOQFAmapQivYx77nOZTSUposHg';
+  const form = FormApp.openById(id);
+  const items = form.getItems();
+  items.forEach(item =>{
+    Logger.log(item.getTitle());
+  })
+  const mul = items[1].asMultipleChoiceItem();
+  mul.setChoiceValues(['Purple','Pink','Teal']);
+}
