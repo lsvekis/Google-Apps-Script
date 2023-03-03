@@ -1,0 +1,23 @@
+function tableMaker(){
+  const id = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('users');
+  const data = sheet.getDataRange().getValues();
+  const header = data[0];
+  const rows = data.slice(1);
+  let html = '<table style="border:1px solid black">';
+  data.forEach(row=>{
+    html += '<tr>';
+    row.forEach(cell=>{
+      html += '<td style="border:1px solid #ddd">'+cell+'</td>';
+    })
+    html += '</tr>';
+  })
+  html += '</table>';
+  const email = Session.getActiveUser().getEmail();
+  const subject = 'My Table';
+  MailApp.sendEmail({
+    to:email,
+    subject:subject,
+    htmlBody:html
+  });
+}
