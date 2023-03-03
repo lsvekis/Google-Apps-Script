@@ -1,0 +1,15 @@
+function makeForm(){
+  const form = FormApp.create('Laurence Test');
+  form.addTextItem()
+  .setTitle('Whats your name')
+  .setRequired(true);
+  const item1 = form.addMultipleChoiceItem();
+  item1.setTitle('Your Favorite Color')
+  .setChoices([
+    item1.createChoice('Red'),
+    item1.createChoice('Blue'),
+    item1.createChoice('Green'),
+    item1.createChoice('Yellow')
+  ])
+  Logger.log(form.getPublishedUrl());
+}
