@@ -1,0 +1,26 @@
+function getUserInfo(id){
+  const sid = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+  const sheet = SpreadsheetApp.openById(sid).getSheetByName('users');
+  const data = sheet.getDataRange().getValues().slice(1);
+  let rep = null;
+  data.forEach(ele =>{
+    if(ele[2] == id){
+      rep = {name:ele[0],email:ele[1],id:ele[2],status:ele[3]}
+    };
+  })
+  return rep;
+}
+
+function tester(){
+  Logger.log(getUserInfo(3));
+}
+
+function doGet(e){
+  let data = null;
+  if('id' in e.parameters){
+    let val = e.parameters['id'][0];
+    data = getUserInfo(val);
+  }
+  const output = JSON.stringify(data);
+  return ContentService.createTextOutput(output).setMimeType(ContentService.MimeType.JSON);
+}
