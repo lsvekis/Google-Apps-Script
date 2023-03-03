@@ -1,0 +1,14 @@
+function modDoc(){
+  const id = '1SCE46vJBcWzMXCwhTBW_Hs_NC00LBIYWKFjiwZCXXVY';
+  const doc = DocumentApp.openById(id);
+  const body = doc.getBody();
+  const paras = body.getParagraphs();
+  const style = {};
+  style[DocumentApp.Attribute.BOLD] = true;
+  style[DocumentApp.Attribute.FONT_SIZE] = 18;
+  paras.forEach(para =>{
+    if(para.getText().indexOf('Lorem ipsum') !== -1){
+      para.setAttributes(style);  
+    }
+  })
+}
