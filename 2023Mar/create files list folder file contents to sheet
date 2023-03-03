@@ -1,0 +1,28 @@
+function dataFolder(){
+  const sid = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+  const id = '1a591VSrO-dj11PJk04cm6PtpiRVepssw';
+  const folder = DriveApp.getFolderById(id);
+  const sheet = SpreadsheetApp.openById(sid).getSheetByName('files');
+  const files = folder.getFiles();
+  Logger.log(files);
+  while (files.hasNext()){
+    const file = files.next();
+    sheet.appendRow([file.getName(),file.getId(),file.getSize()]);
+    Logger.log(file.getName());
+  }
+}
+
+function newFiles(){
+  const id = '1a591VSrO-dj11PJk04cm6PtpiRVepssw';
+  const folder = DriveApp.getFolderById(id);
+  const doc = DocumentApp.create('new Doc');
+  const docID = doc.getId();
+  const file = DriveApp.getFileById(docID);
+  file.moveTo(folder);
+}
+
+function newFiles2(){
+  const folder = DriveApp.getFolderById('1a591VSrO-dj11PJk04cm6PtpiRVepssw');
+  const doc = DocumentApp.create('new Doc 2');
+  DriveApp.getFileById(doc.getId()).moveTo(folder);
+}
