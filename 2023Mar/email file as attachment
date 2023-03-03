@@ -1,0 +1,10 @@
+function sendAtt(){
+  const id = '1SCE46vJBcWzMXCwhTBW_Hs_NC00LBIYWKFjiwZCXXVY';
+  const rep = Session.getActiveUser().getEmail();
+  const sub = 'Test Email';
+  const body = 'Hello World Testing....';
+  const att = DriveApp.getFileById(id);
+  MailApp.sendEmail(rep,sub,body,{
+    attachments:[att]
+  });
+}
