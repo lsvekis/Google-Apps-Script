@@ -1,0 +1,12 @@
+function sender(){
+  const id = '1P9R_b-dTdoBAAWAGF6kPZyKSXJ6r2P_LFgrKeReNmrY';
+  const sheet = SpreadsheetApp.openById(id).getSheetByName('users');
+  const data = sheet.getDataRange().getValues();
+  const users = data.slice(1);
+  users.forEach(user =>{
+    const email = user[1];
+    const message = `Dear ${user[0]} \n\nThis is a test!`;
+    const subject = `Info for ID ${user[2]}`;
+    MailApp.sendEmail(email,subject,message);
+  })
+}
