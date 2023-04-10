@@ -1,0 +1,34 @@
+function onOpen(){
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Adv')
+  .addItem('lock','lockSheet')
+  .addItem('maker','makeMySheet')
+  .addToUi();
+}
+
+function lockSheet(){
+  const sheet = SpreadsheetApp.getActiveSheet();
+  const lock = LockService.getScriptLock();
+  const ui = SpreadsheetApp.getUi();
+  try{
+    lock.waitLock(30000);
+  }catch(e){
+    Logger.log('Failed to acquire lock '+e);
+  } finally{
+    lock.releaseLock();
+  }
+}
+
+function makeMySheet(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const numSheets = ss.getSheets();
+  const sheetName = 'Sheet'+numSheets.length;
+  let newSheet = ss.getSheetByName(sheetName);
+  if(newSheet == null){
+    newSheet = ss.insertSheet();
+    newSheet.setName(sheetName);
+  }else{
+    newSheet.clear();
+  }
+  newSheet.appendRow([1,2,3]);
+}
