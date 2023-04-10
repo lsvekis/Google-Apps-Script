@@ -1,0 +1,30 @@
+function onOpen(){
+  const ui = SpreadsheetApp.getUi();
+  ui.createMenu('Adv')
+  .addItem('copy','copyFun')
+  .addToUi();
+}
+
+function copyFun(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getActiveSheet();
+  const range = sheet.getActiveRange();
+  const data = range.getValues();
+  createMySheet(data,ss,range);
+  //const ui = SpreadsheetApp.getUi();
+  //ui.alert(data);
+}
+
+function createMySheet(data,ss,range){
+  const numSheets = ss.getSheets();
+  const sheetName = 'Sheet '+numSheets.length;
+  let newSheet = ss.getSheetByName(sheetName);
+  if(newSheet == null){
+    newSheet = ss.insertSheet();
+    newSheet.setName(sheetName);
+  }else{
+    newSheet.clear();
+  }
+  const newRange = newSheet.getRange(1,1,range.getNumRows(),range.getNumColumns());
+  newRange.setValues(data);
+}
