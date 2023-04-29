@@ -1,0 +1,11 @@
+function addColumn() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheets()[0];
+  const sheetName = sheet.getName();
+  sheet.insertColumnBefore(1);
+  const lastCol = sheet.getMaxColumns();
+  sheet.insertColumnAfter(lastCol);
+  sheet.getRange(1,1).setValue('FIRST');
+  sheet.getRange(1,lastCol+1).setValue('LAST');
+  Logger.log(lastCol);
+}
