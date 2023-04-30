@@ -1,0 +1,10 @@
+function createPivot(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Sheet3');
+  const range = sheet.getDataRange();
+  const pSheet = ss.insertSheet();
+  const pivotTable = pSheet.getRange('A1').createPivotTable(range);
+  pivotTable.addRowGroup(2);
+  pivotTable.addPivotValue(2,SpreadsheetApp.PivotTableSummarizeFunction.COUNTA);
+
+}
