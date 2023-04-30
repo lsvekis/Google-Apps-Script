@@ -1,0 +1,7 @@
+function sortRows(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getActiveSheet();
+  Logger.log(sheet.getSheetName());
+  const sortCol = 1;
+  sheet.sort(sortCol);
+}
