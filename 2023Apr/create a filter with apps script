@@ -1,0 +1,11 @@
+function createFilter(){
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('Sheet2');
+  const range = sheet.getDataRange();
+  const criteria = SpreadsheetApp.newFilterCriteria()
+    .setHiddenValues(['apple','orange'])
+    .build();
+  const filter = range.getFilter() || range.createFilter();
+  filter.setColumnFilterCriteria(1,criteria);
+  Logger.log(filter);
+}
