@@ -1,0 +1,26 @@
+function createNewSlidePresentation(){
+  const slideName = 'Presetation 1';
+  const presentation = SlidesApp.create(slideName);
+  Logger.log(presentation.getId());
+  const slide1 = presentation.appendSlide(SlidesApp.PredefinedLayout.BLANK);
+  const textBox = slide1.insertShape(SlidesApp.ShapeType.TEXT_BOX);
+  textBox.getText().setText('Hello World');
+  textBox.setTop(40).setLeft(50);
+  const subtitle = slide1.insertTextBox('Laurence Svekis');
+  subtitle.getText().setText('Laurence Svekis');
+  subtitle.getBorder().setWeight(2);
+  subtitle.getFill().setSolidFill('#ff0000');
+  subtitle.setLeft(400).setTop(20);
+
+  const slide2 = presentation.appendSlide(SlidesApp.PredefinedLayout.TITLE);
+  const newTitle = slide2.insertShape(SlidesApp.ShapeType.TEXT_BOX);
+  newTitle.getText().setText('Laurence Svekis');
+  newTitle.setTop(40).setLeft(50);
+  newTitle.getFill().setSolidFill('#00ff00');
+
+  const newBody = slide2.insertShape(SlidesApp.ShapeType.TEXT_BOX);
+  newBody.getText().setText('Laurence Svekis');
+  newBody.getBorder().setWeight(1);
+  newBody.getFill().setSolidFill('#ffffff');
+  newBody.setLeft(100).setTop(60);
+}
