@@ -1,0 +1,6 @@
+function DEC_TO_BINARY(dec){
+  return dec.toString(2);
+}
+function DEC_TO_HEX(dec){
+  return dec.toString(16);
+}
