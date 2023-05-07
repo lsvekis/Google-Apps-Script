@@ -1,0 +1,11 @@
+function SUM_OF_SQUARES(range){
+  let sum = 0;
+  range = range.toString();
+  range = range.replace(/\s+/g,'').trim();
+  const arr = range.split(',');
+    arr.forEach(val =>{
+    sum += val * val;
+  })
+  return sum;
+  //return JSON.stringify(arr);
+}
