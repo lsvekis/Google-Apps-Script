@@ -1,0 +1,21 @@
+function CONCAT_CAP(str1,str2){
+  const stra = upperMe(str1);
+  const strb = upperMe(str2);
+  return stra.concat(strb);
+}
+function CONCAT_CAP2(str1,str2){
+  const stra = str1.chatAt(0).toUpperCase();
+  const concatVal = str1.concat(str2);
+  let firstLetter = concatVal.charAt(0).toUpperCase();
+  let restVals = concatVal.slice(1).toLowerCase();
+  return firstLetter + restVals;
+}
+function upperMe(val){
+  Logger.log(val);
+  return val.charAt(0).toUpperCase() + val.slice(1).toLowerCase();
+}
+
+function test(){
+  const val = 'laurence';
+  upperMe(val);
+}
