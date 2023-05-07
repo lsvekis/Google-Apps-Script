@@ -1,0 +1,10 @@
+function COUNT_VAL(range,val){
+  let count = 0;
+  const arr = range.split(',');
+  arr.forEach(v =>{
+    if(val == v.trim()){
+      count++;
+    }
+  })
+  return count;
+}
