@@ -1,0 +1,13 @@
+function AVE_Above_Threshold(range,threhold) {
+  let sum = 0;
+  let count = 0;
+  const arr = range.trim().split(',');
+  arr.forEach(val =>{
+    let num = parseInt(val.trim());
+    if(num >= threhold){
+      count++;
+      sum += num;
+    }
+  })
+  return count == 0 ? 0 : sum/count;
+}
