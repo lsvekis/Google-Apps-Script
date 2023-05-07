@@ -1,0 +1,6 @@
+function CAL_AGE(birthdate){
+  const mils = Date.now() - birthdate.getTime();
+  const ageDate = new Date(mils);
+  const age = Math.abs(ageDate.getUTCFullYear()-1970);
+  return age;
+}
