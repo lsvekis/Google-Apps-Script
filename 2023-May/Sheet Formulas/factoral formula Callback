@@ -1,0 +1,13 @@
+function FACTORIALVAL(val){
+  if(val == 0){
+    return 1;
+  }else{
+    Logger.log(val);
+    return val * FACTORIALVAL(val-1);
+  }
+}
+
+function test1(){
+  let v =4;
+  Logger.log(FACTORIALVAL(v));
+}
