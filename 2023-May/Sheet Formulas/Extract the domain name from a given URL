@@ -1,0 +1,8 @@
+function GET_DOMAIN(url){
+  let domain = '';
+  let matches = url.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+  if(matches && matches[1]){
+    domain = matches[1];
+  }
+  return domain;
+}
