@@ -1,0 +1,6 @@
+function LAST_VALS(str,num){
+  if(num >= str.length){
+    return str;
+  }
+  return str.slice(str.length - num);
+}
