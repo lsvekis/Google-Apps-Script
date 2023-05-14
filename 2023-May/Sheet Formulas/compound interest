@@ -1,0 +1,4 @@
+function COMPOUND_INTEREST(principal, rate, time) {
+  var interest = principal * (Math.pow((1 + (rate / 100)), time) - 1);
+  return interest.toFixed(2);
+}
