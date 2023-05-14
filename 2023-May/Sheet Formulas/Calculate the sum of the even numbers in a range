@@ -1,0 +1,9 @@
+function SUM_OF_EVEN(first,second) {
+  let sum = 0;
+  for (let i = first; i < second+1; i++) {
+    if (i % 2 === 0) {
+      sum += i;
+    }
+  }
+  return sum;
+}
