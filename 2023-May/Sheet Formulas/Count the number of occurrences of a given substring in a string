@@ -1,0 +1,9 @@
+function COUNT_SUBSTR(str,sbStr){
+  let count = 0;
+  let pos = str.indexOf(sbStr);
+  while (pos !== -1){
+    count++;
+    pos = str.indexOf(sbStr,pos+1);
+  }
+  return count;
+}
