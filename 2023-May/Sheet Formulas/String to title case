@@ -1,0 +1,7 @@
+function TITLE_CASE(str){
+  const words = str.toLowerCase().split(' ');
+  words.forEach((ele,ind) =>{
+    words[ind] = ele.charAt(0).toUpperCase()+ele.slice(1);
+  })
+  return words.join(' ');
+}
