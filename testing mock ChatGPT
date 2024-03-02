@@ -1,0 +1,77 @@
+// Refactored functions with dependency injection
+function sendPromptToChatGPT(prompt, fetchFunction) {
+  // Use fetchFunction instead of UrlFetchApp.fetch
+  const response = fetchFunction('https://api.openai.com/completions', /* options */);
+  const json = JSON.parse(response);
+  const text = json.choices[0].text.trim();
+  return text;
+}
+
+function createDocWithResponse(responseText, docApp, driveApp, folderId) {
+  // Use docApp and driveApp instead of DocumentApp and DriveApp
+  const doc = docApp.create('ChatGPT Response');
+  const body = doc.getBody();
+  body.setText(responseText);
+  const file = driveApp.getFileById(doc.getId());
+  driveApp.getFolderById(folderId).addFile(file);
+  driveApp.getRootFolder().removeFile(file);
+  return doc.getUrl();
+}
+
+// Mock functions
+function mockFetch(url, options) {
+  // Simulate a response from the OpenAI API
+  return JSON.stringify({
+    choices: [{ text: 'This is a simulated response' }]
+  });
+}
+
+function mockDocumentApp() {
+  // Simulate the DocumentApp behavior
+  return {
+    create: function (name) {
+      return {
+        getId: function () { return 'dummyDocId'; },
+        getBody: function () { return { setText: function (text) {} }; },
+        getUrl: function () { return 'http://dummyDocUrl'; }
+      };
+    }
+  };
+}
+
+function mockDriveApp() {
+  // Simulate the DriveApp behavior
+  return {
+    getFileById: function (id) {
+      return {};
+    },
+    getFolderById: function (id) {
+      return {
+        addFile: function (file) {},
+        removeFile: function (file) {}
+      };
+    },
+    getRootFolder: function () {
+      return {
+        removeFile: function (file) {}
+      };
+    }
+  };
+}
+
+// Test function
+function testFunctions() {
+  const dummyPrompt = 'This is a test prompt';
+  const dummyFolderId = 'dummyFolderId';
+
+  const testResponse = sendPromptToChatGPT(dummyPrompt, mockFetch);
+  console.log('Test response from ChatGPT:', testResponse);
+
+  const testDocUrl = createDocWithResponse('Test response', mockDocumentApp(), mockDriveApp(), dummyFolderId);
+  console.log('Test document URL:', testDocUrl);
+}
+
+// Run this function to perform the tests
+testFunctions();
+
+/*
