@@ -1,0 +1,16 @@
+function sendEmailNotification() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  
+  for (var i = 2; i <= lastRow; i++) {
+    var assignedTo = sheet.getRange(i, 2).getValue(); // Assuming assignedTo column is B
+    var taskDescription = sheet.getRange(i, 1).getValue(); // Assuming taskDescription column is A
+    var emailAddress = sheet.getRange(i, 3).getValue(); // Assuming emailAddress column is C
+    
+    if (assignedTo !== "" && emailAddress !== "") {
+      var subject = "Task Assigned: " + taskDescription;
+      var message = "You have been assigned a new task: " + taskDescription;
+      MailApp.sendEmail(emailAddress, subject, message);
+    }
+  }
+}
